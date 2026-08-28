@@ -1,904 +1,1285 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Няня</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
-  <style>
-    /* ===== ОБЩИЕ СТИЛИ ===== */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Валерия — профессиональная няня</title>
+    <style>
+        /* ============================================================
+                   ГЛОБАЛЬНЫЕ СТИЛИ – ЭЛЕГАНТНЫЙ И УЮТНЫЙ
+                   ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    :root {
-      --c1: #fdfbf7;
-      --c2: #f7f3eb;
-      --c3: #eee9df;
-      --c4: #e4ddd1;
-      --text: #5a4a3a;
-      --text-light: #8c7a6b;
-      --accent: #c9a98a;
-      --accent-soft: #e8d5c0;
-    }
+        :root {
+            --color-bg: #FCF9F7;
+            --color-bg-section: #F6F2EF;
+            --color-white: #FFFFFF;
+            --color-text: #2C2C2C;
+            --color-text-light: #4F4F4F;
+            --color-text-muted: #777777;
 
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: transparent; 
-      color: var(--text);
-      line-height: 1.7;
-    }
+            --color-coral: #D4887A;
+            --color-coral-dark: #BA6E60;
+            --color-coral-light: #F0DFDA;
+            --color-lavender: #A8B5D6;
+            --color-lavender-dark: #8899C4;
+            --color-lavender-light: #EEF2F9;
 
-    /* ===== NAV ===== */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(253,251,247,.92);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--c4);
-      padding: 0 5vw;
-      display: flex; align-items: center; justify-content: space-between;
-      height: 58px;
-    }
-    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--text); }
-    .nav-links { display: flex; gap: 1.8rem; list-style: none; }
-    .nav-links a { text-decoration: none; font-size: .875rem; color: var(--text-light); transition: color .2s; }
-    .nav-links a:hover { color: var(--accent); }
-    .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
-    .burger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: .3s; }
+            --color-border: #E5DDD5;
+            --shadow: 0 6px 28px rgba(0, 0, 0, 0.06);
+            --shadow-hover: 0 14px 44px rgba(0, 0, 0, 0.09);
+            --radius: 18px;
+            --radius-sm: 12px;
+            --radius-full: 40px;
+            --font: 'Segoe UI', system-ui, -apple-system, Arial, Helvetica, sans-serif;
+            --transition: 0.3s ease;
+        }
 
-    /* ===== HERO ===== */
-    #hero {
-      min-height: 100vh;
-      background: var(--c2);
-      display: flex; align-items: center; justify-content: center;
-      padding: 100px 5vw 60px;
-      text-align: center;
-    }
-    .hero-inner { max-width: 680px; }
-    .hero-avatar {
-      width: 130px; height: 130px;
-      border-radius: 50%;
-      background: var(--c3);
-      border: 4px solid var(--c4);
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 1.8rem;
-      font-size: 3.4rem;
-      box-shadow: 0 8px 32px rgba(0,0,0,.07);
-    }
-    .hero-tag {
-      display: inline-block;
-      background: var(--accent-soft);
-      color: var(--accent);
-      font-size: .75rem; letter-spacing: .12em; text-transform: uppercase;
-      padding: .3rem 1rem; border-radius: 20px; margin-bottom: 1rem;
-      font-weight: 500;
-    }
-    h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 6vw, 3.2rem); font-weight: 600; margin-bottom: .5rem; }
-    .hero-sub { font-size: 1.05rem; color: var(--text-light); margin-bottom: 2rem; font-weight: 300; }
-    .btn {
-      display: inline-block; padding: .75rem 2rem;
-      background: var(--accent); color: #fff;
-      border-radius: 30px; text-decoration: none;
-      font-size: .9rem; font-weight: 500;
-      transition: transform .2s, box-shadow .2s;
-      box-shadow: 0 4px 16px rgba(201,169,138,.4);
-      border: none; cursor: pointer;
-    }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,169,138,.5); }
-    .btn-outline {
-      background: transparent; color: var(--accent);
-      border: 1.5px solid var(--accent);
-      box-shadow: none; margin-left: .75rem;
-    }
-    .btn-outline:hover { background: var(--accent-soft); box-shadow: none; }
+        html {
+            scroll-behavior: smooth;
+        }
 
-    /* ===== SECTIONS ===== */
-    section { padding: 80px 5vw; }
-    section:nth-child(even) { background: var(--c2); }
-    .section-label {
-      font-size: .72rem; letter-spacing: .14em; text-transform: uppercase;
-      color: var(--accent); font-weight: 500; margin-bottom: .6rem;
-    }
-    h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 4vw, 2.2rem); margin-bottom: 1rem; }
-    .divider { width: 40px; height: 3px; background: var(--accent-soft); border-radius: 2px; margin-bottom: 2rem; }
-    .container { max-width: 960px; margin: 0 auto; }
+        body {
+            font-family: var(--font);
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.8;
+            font-size: 18px;
+            -webkit-font-smoothing: antialiased;
+        }
 
-    /* ===== ABOUT (Валерия) ===== */
-    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
-    .about-text p { color: var(--text-light); margin-bottom: 1rem; }
-    .about-stats { display: flex; gap: 2rem; margin-top: 1.5rem; }
-    .stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--text); }
-    .stat-label { font-size: .78rem; color: var(--text-light); }
-    .about-card {
-      background: var(--c3); border-radius: 20px; padding: 2rem;
-      border: 1px solid var(--c4);
-      display: flex; flex-direction: column; gap: 1rem;
-    }
-    .about-item { display: flex; gap: .75rem; align-items: flex-start; }
-    .about-icon { font-size: 1.3rem; margin-top: .1rem; }
-    .about-item strong { display: block; font-size: .9rem; margin-bottom: .1rem; }
-    .about-item span { font-size: .82rem; color: var(--text-light); }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
 
-    /* ===== КАРУСЕЛЬ (фото, отзывы) ===== */
-    .carousel {
-      position: relative;
-      overflow: hidden;
-      border-radius: 16px;
-      margin: 1.5rem 0;
-      background: var(--c1);
-      border: 1px solid var(--c4);
-    }
-    .carousel-track {
-      display: flex;
-      transition: transform 0.4s ease;
-      will-change: transform;
-    }
-    .carousel-slide {
-      min-width: 100%;
-      padding: 1.5rem 2rem;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-    .carousel-slide img {
-      max-width: 100%;
-      max-height: 300px;
-      border-radius: 12px;
-      object-fit: cover;
-      margin-bottom: .8rem;
-    }
-    .carousel-slide .slide-text {
-      font-size: .9rem;
-      color: var(--text-light);
-    }
-    .carousel-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(255,255,255,.8);
-      border: 1px solid var(--c4);
-      border-radius: 50%;
-      width: 36px; height: 36px;
-      cursor: pointer;
-      font-size: 1.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: .2s;
-      z-index: 5;
-    }
-    .carousel-btn:hover { background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,.1); }
-    .carousel-btn.prev { left: 8px; }
-    .carousel-btn.next { right: 8px; }
-    .carousel-dots {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px 0 6px;
-    }
-    .carousel-dots .dot {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      background: var(--c4);
-      cursor: pointer;
-      transition: .2s;
-      border: none;
-    }
-    .carousel-dots .dot.active { background: var(--accent); }
+        /* ============================================================
+                   НАВИГАЦИЯ
+                   ============================================================ */
+        nav {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--color-border);
+            padding: 14px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.03);
+        }
 
-    /* ===== ОПЫТ ===== */
-    .timeline { display: flex; flex-direction: column; gap: 1.5rem; max-width: 680px; }
-    .tl-item { display: flex; gap: 1.2rem; }
-    .tl-dot-col { display: flex; flex-direction: column; align-items: center; }
-    .tl-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); flex-shrink: 0; margin-top: 4px; }
-    .tl-line { width: 2px; flex: 1; background: var(--c4); margin-top: 4px; }
-    .tl-content { padding-bottom: 1rem; }
-    .tl-content h3 { font-size: .95rem; margin-bottom: .15rem; }
-    .tl-content .tl-period { font-size: .75rem; color: var(--accent); font-weight: 500; margin-bottom: .3rem; }
-    .tl-content p { font-size: .82rem; color: var(--text-light); }
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-    /* ===== ОБЯЗАННОСТИ (аккордеон) ===== */
-    .accordion {
-      background: var(--c1);
-      border: 1px solid var(--c4);
-      border-radius: 16px;
-      padding: 0 1.5rem;
-      margin-top: .5rem;
-    }
-    .accordion-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 0;
-      cursor: pointer;
-      font-weight: 500;
-      user-select: none;
-    }
-    .accordion-header .arrow {
-      transition: transform .3s;
-      font-size: 1.2rem;
-    }
-    .accordion-header .arrow.open { transform: rotate(180deg); }
-    .accordion-body {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height .3s ease;
-    }
-    .accordion-body ul {
-      padding: 0 0 1.2rem 1.2rem;
-      list-style: none;
-    }
-    .accordion-body ul li {
-      padding: .3rem 0;
-      color: var(--text-light);
-      font-size: .85rem;
-      position: relative;
-      padding-left: 1.4rem;
-    }
-    .accordion-body ul li::before {
-      content: "•";
-      position: absolute;
-      left: 0;
-      color: var(--accent);
-    }
+        .nav-logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--color-text);
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-logo span {
+            color: var(--color-coral);
+        }
 
-    /* ===== ОТЗЫВЫ ===== */
-    .review-slide .stars { color: var(--accent); font-size: 1.1rem; margin-bottom: .5rem; }
-    .review-slide .review-text { font-size: .9rem; color: var(--text-light); font-style: italic; margin-bottom: .5rem; }
-    .review-slide .review-author { font-weight: 500; font-size: .85rem; }
+        .nav-links {
+            display: flex;
+            gap: 2.2rem;
+            list-style: none;
+            font-weight: 500;
+            align-items: center;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--color-text-light);
+            transition: color var(--transition);
+            font-size: 0.95rem;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2.5px;
+            background: var(--color-lavender);
+            transition: width var(--transition);
+            border-radius: 4px;
+        }
+        .nav-links a:hover {
+            color: var(--color-coral-dark);
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
 
-    /* ===== МОДАЛЬНОЕ ОКНО ===== */
-    .modal-overlay {
-      display: none;
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,.4);
-      backdrop-filter: blur(4px);
-      z-index: 200;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-    }
-    .modal-overlay.open { display: flex; }
-    .modal {
-      background: var(--c1);
-      max-width: 480px;
-      width: 100%;
-      border-radius: 24px;
-      padding: 2rem;
-      box-shadow: 0 24px 48px rgba(0,0,0,.15);
-      position: relative;
-    }
-    .modal-close {
-      position: absolute;
-      top: 12px; right: 16px;
-      font-size: 1.8rem;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--text-light);
-    }
-    .modal h3 { font-family: 'Playfair Display', serif; margin-bottom: 1rem; }
-    .modal input, .modal textarea {
-      width: 100%;
-      padding: .75rem 1rem;
-      border: 1.5px solid var(--c4);
-      border-radius: 10px;
-      background: var(--c1);
-      color: var(--text);
-      font-family: inherit;
-      font-size: .875rem;
-      margin-bottom: 1rem;
-      outline: none;
-      transition: border-color .2s;
-      resize: vertical;
-    }
-    .modal input:focus, .modal textarea:focus { border-color: var(--accent); }
-    .modal textarea { min-height: 80px; }
+        .nav-btn {
+            background: var(--color-coral);
+            color: #fff !important;
+            padding: 0.5rem 1.6rem !important;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            transition: all var(--transition);
+            box-shadow: 0 4px 14px rgba(212, 136, 122, 0.3);
+        }
+        .nav-btn::after {
+            display: none !important;
+        }
+        .nav-btn:hover {
+            background: var(--color-coral-dark) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(212, 136, 122, 0.4);
+            color: #fff !important;
+        }
 
-    /* ===== ГАЛЕРЕЯ ФОТО (сертификаты) ===== */
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-    .gallery-grid img {
-      width: 100%;
-      aspect-ratio: 4/3;
-      object-fit: cover;
-      border-radius: 12px;
-      border: 1px solid var(--c4);
-      transition: transform .2s;
-    }
-    .gallery-grid img:hover { transform: scale(1.02); }
+        .burger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
+        .burger span {
+            display: block;
+            width: 26px;
+            height: 2.5px;
+            background: var(--color-text);
+            border-radius: 4px;
+            transition: var(--transition);
+        }
 
-    /* ===== ВИДЕО ===== */
-    .video-wrapper {
-      position: relative;
-      padding-bottom: 56.25%; /* 16:9 */
-      height: 0;
-      border-radius: 16px;
-      overflow: hidden;
-      background: #000;
-      margin: 1rem 0;
-    }
-    .video-wrapper video {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-    }
+        /* ============================================================
+                   ГЛАВНЫЙ ЭКРАН (HERO) – ВЕРТИКАЛЬНОЕ ФОТО
+                   ============================================================ */
+        #hero {
+            padding: 50px 0 80px;
+            background: var(--color-white);
+            position: relative;
+            overflow: hidden;
+        }
+        #hero::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(168, 181, 214, 0.12) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        #hero::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            left: -5%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(212, 136, 122, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
 
-    /* ===== КОНТАКТЫ ===== */
-    #contact { background: var(--c3); }
-    .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
-    .contact-info p { color: var(--text-light); margin-bottom: 1.5rem; font-size: .9rem; }
-    .contact-links { display: flex; flex-direction: column; gap: .85rem; }
-    .contact-link {
-      display: flex; align-items: center; gap: .75rem;
-      text-decoration: none; color: var(--text);
-      font-size: .9rem;
-      padding: .75rem 1rem;
-      background: var(--c1); border-radius: 12px;
-      border: 1px solid var(--c4);
-      transition: transform .2s, box-shadow .2s;
-    }
-    .contact-link:hover { transform: translateX(4px); box-shadow: 0 4px 16px rgba(0,0,0,.06); }
-    .contact-link-icon { font-size: 1.2rem; width: 32px; text-align: center; }
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
 
-    /* ===== FOOTER ===== */
-    footer {
-      text-align: center; padding: 1.8rem 5vw;
-      background: var(--c4); font-size: .78rem; color: var(--text-light);
-    }
+        .hero-photo {
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            background: var(--color-lavender-light);
+            transition: box-shadow var(--transition);
+            border: 2px solid var(--color-lavender-light);
+        }
+        .hero-photo:hover {
+            box-shadow: var(--shadow-hover);
+            border-color: var(--color-lavender);
+        }
+        .hero-photo img {
+            width: 100%;
+            height: 560px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        .hero-photo:hover img {
+            transform: scale(1.02);
+        }
 
-    /* ===== АДАПТИВ ===== */
-    @media (max-width: 720px) {
-      .nav-links { display: none; flex-direction: column; position: fixed; top: 58px; left: 0; right: 0; background: var(--c1); border-bottom: 1px solid var(--c4); padding: 1rem 5vw; gap: 1rem; }
-      .nav-links.open { display: flex; }
-      .burger { display: flex; }
-      .about-grid, .contact-inner { grid-template-columns: 1fr; gap: 2rem; }
-      .about-stats { gap: 1.5rem; }
-      .btn-outline { margin-left: 0; margin-top: .5rem; }
-      #hero .btn-group { display: flex; flex-direction: column; align-items: center; gap: .5rem; }
-      .carousel-slide { padding: 1rem; }
-      .carousel-slide img { max-height: 200px; }
-    }
+        .hero-content .tag {
+            display: inline-block;
+            background: var(--color-lavender-light);
+            color: var(--color-lavender-dark);
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 0.4rem 1.6rem;
+            border-radius: var(--radius-full);
+            margin-bottom: 1.2rem;
+            border: 1px solid var(--color-lavender);
+            box-shadow: 0 2px 8px rgba(168, 181, 214, 0.15);
+        }
 
-    .bg-video {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -1;
-}
+        .hero-content h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.05;
+            margin-bottom: 0.2rem;
+            color: var(--color-text);
+            letter-spacing: -1.5px;
+        }
+        .hero-content h1 span {
+            color: var(--color-coral);
+        }
 
-  </style>
+        .hero-content .subtitle {
+            font-size: 1.5rem;
+            color: var(--color-text-light);
+            margin-bottom: 1.2rem;
+            font-weight: 400;
+        }
+
+        .hero-content .description {
+            font-size: 1.05rem;
+            color: var(--color-text-muted);
+            max-width: 500px;
+            margin-bottom: 2.2rem;
+            line-height: 1.8;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.85rem 2.4rem;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all var(--transition);
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--color-coral);
+            color: #fff;
+            box-shadow: 0 4px 18px rgba(212, 136, 122, 0.35);
+        }
+        .btn-primary:hover {
+            background: var(--color-coral-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 32px rgba(212, 136, 122, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--color-lavender-dark);
+            border: 2px solid var(--color-lavender);
+        }
+        .btn-outline:hover {
+            background: var(--color-lavender-light);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 16px rgba(168, 181, 214, 0.25);
+            border-color: var(--color-lavender-dark);
+        }
+
+        /* ============================================================
+                   СЕКЦИИ – убрали .section-label везде
+                   ============================================================ */
+        section {
+            padding: 80px 0;
+        }
+
+        h2 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            color: var(--color-text);
+            letter-spacing: -0.5px;
+            line-height: 1.1;
+        }
+        h2 .accent {
+            color: var(--color-coral);
+        }
+
+        .divider {
+            width: 56px;
+            height: 4px;
+            background: var(--color-lavender);
+            border-radius: 6px;
+            margin-bottom: 2.2rem;
+            box-shadow: 0 2px 8px rgba(168, 181, 214, 0.2);
+        }
+
+        .section-sub {
+            font-size: 1.05rem;
+            color: var(--color-text-muted);
+            max-width: 700px;
+            margin-bottom: 2.8rem;
+            line-height: 1.8;
+        }
+
+        /* ============================================================
+                   ОПЫТ РАБОТЫ
+                   ============================================================ */
+        #experience {
+            background: var(--color-bg-section);
+        }
+
+        .experience-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .exp-item {
+            background: var(--color-white);
+            border-radius: var(--radius);
+            padding: 2rem 2.2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--color-border);
+            transition: all var(--transition);
+        }
+        .exp-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--color-lavender);
+        }
+
+        .exp-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.4rem;
+        }
+        .exp-header h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--color-text);
+        }
+        .exp-header .exp-period {
+            font-weight: 600;
+            color: var(--color-lavender-dark);
+            font-size: 0.85rem;
+            background: var(--color-lavender-light);
+            padding: 0.1rem 1.2rem;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--color-lavender);
+        }
+        .exp-age {
+            font-weight: 600;
+            color: var(--color-text-muted);
+            margin-bottom: 0.3rem;
+            font-size: 0.95rem;
+        }
+        .exp-duties {
+            color: var(--color-text-light);
+            margin-bottom: 0.3rem;
+            line-height: 1.7;
+        }
+        .exp-duties strong {
+            color: var(--color-text);
+        }
+        .exp-results {
+            color: var(--color-text-light);
+            border-left: 4px solid var(--color-lavender);
+            margin-top: 0.5rem;
+            padding: 0.7rem 1.2rem;
+            background: var(--color-lavender-light);
+            border-radius: var(--radius-sm);
+            line-height: 1.7;
+        }
+        .exp-results strong {
+            color: var(--color-text);
+        }
+
+        /* ============================================================
+                   ПРЕИМУЩЕСТВА
+                   ============================================================ */
+        #why {
+            background: var(--color-white);
+        }
+
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem 2.5rem;
+            margin-bottom: 3.5rem;
+            background: var(--color-bg-section);
+            padding: 2rem 2.5rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--color-border);
+        }
+
+        .advantage-item {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            font-size: 0.98rem;
+            font-weight: 600;
+            color: var(--color-text);
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+            transition: all var(--transition);
+        }
+        .advantage-item:last-child {
+            border-bottom: none;
+        }
+        .advantage-item .check {
+            color: var(--color-coral);
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            width: 24px;
+            text-align: center;
+        }
+        .advantage-item:hover {
+            transform: translateX(4px);
+            color: var(--color-coral-dark);
+        }
+        .advantage-item:hover .check {
+            transform: scale(1.2);
+        }
+
+        /* ============================================================
+                   КАРУСЕЛЬ (документы и отзывы)
+                   ============================================================ */
+        .carousel-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radius);
+            background: var(--color-white);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--color-border);
+            transition: box-shadow var(--transition);
+        }
+        .carousel-wrapper:hover {
+            box-shadow: var(--shadow-hover);
+            border-color: var(--color-lavender);
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-bg);
+            height: 380px;
+            overflow: hidden; /* чтобы скрыть обрезанные части при cover */
+        }
+
+        /* Теперь картинки заполняют весь слайд без пустот */
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* заполняет контейнер, обрезая лишнее */
+            display: block;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid var(--color-lavender);
+            border-radius: 50%;
+            width: 46px;
+            height: 46px;
+            font-size: 1.6rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition);
+            z-index: 5;
+            color: var(--color-lavender-dark);
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+            backdrop-filter: blur(4px);
+        }
+        .carousel-btn:hover {
+            background: var(--color-lavender-light);
+            box-shadow: 0 4px 24px rgba(168, 181, 214, 0.2);
+            color: var(--color-lavender-dark);
+            transform: translateY(-50%) scale(1.05);
+            border-color: var(--color-lavender-dark);
+        }
+        .carousel-btn.prev {
+            left: 12px;
+        }
+        .carousel-btn.next {
+            right: 12px;
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 18px 0 14px;
+        }
+        .carousel-dots .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--color-border);
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+        .carousel-dots .dot.active {
+            background: var(--color-coral);
+            transform: scale(1.25);
+            box-shadow: 0 2px 8px rgba(212, 136, 122, 0.4);
+        }
+
+        /* ============================================================
+                   О СЕБЕ
+                   ============================================================ */
+        #about {
+            background: var(--color-bg-section);
+        }
+        #about .about-text p {
+            font-size: 1.02rem;
+            color: var(--color-text-light);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+            padding-left: 1rem;
+            border-left: 3px solid var(--color-lavender-light);
+            padding-left: 1.2rem;
+            transition: border-color var(--transition);
+        }
+        #about .about-text p:hover {
+            border-color: var(--color-coral);
+        }
+        #about .about-text p strong {
+            color: var(--color-text);
+        }
+        #about .about-text p:last-of-type {
+            border-left-color: var(--color-coral-light);
+        }
+
+        .about-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 0.5rem;
+        }
+        .about-tag {
+            background: var(--color-white);
+            padding: 0.3rem 1.2rem;
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--color-lavender-dark);
+            border: 1px solid var(--color-lavender);
+            transition: all var(--transition);
+        }
+        .about-tag:hover {
+            background: var(--color-lavender);
+            color: #fff;
+            border-color: var(--color-lavender-dark);
+            transform: translateY(-2px);
+        }
+
+        /* ============================================================
+                   ОТЗЫВЫ
+                   ============================================================ */
+        #reviews {
+            background: var(--color-white);
+        }
+
+        .review-slide {
+            padding: 3rem 3.5rem;
+            text-align: center;
+            background: var(--color-bg-section);
+            min-height: 240px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+        .review-slide .stars {
+            color: #F5A623;
+            font-size: 1.6rem;
+            letter-spacing: 4px;
+            margin-bottom: 0.6rem;
+        }
+        .review-slide .review-text {
+            font-size: 1.1rem;
+            color: var(--color-text);
+            font-style: italic;
+            margin-bottom: 0.8rem;
+            line-height: 1.8;
+            max-width: 700px;
+        }
+        .review-slide .review-author {
+            font-weight: 600;
+            color: var(--color-lavender-dark);
+            font-size: 0.95rem;
+            background: var(--color-lavender-light);
+            padding: 0.2rem 1.8rem;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--color-lavender);
+        }
+
+        /* ============================================================
+                   КОНТАКТЫ
+                   ============================================================ */
+        #contact {
+            background: var(--color-bg-section);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .contact-info p {
+            color: var(--color-text-muted);
+            margin-bottom: 2.2rem;
+            font-size: 1.02rem;
+            line-height: 1.8;
+        }
+
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            text-decoration: none;
+            color: var(--color-text);
+            font-weight: 500;
+            padding: 0.8rem 1.4rem;
+            background: var(--color-white);
+            border-radius: var(--radius-sm);
+            transition: all var(--transition);
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow);
+        }
+        .contact-link:hover {
+            border-color: var(--color-coral);
+            background: var(--color-coral-light);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-3px);
+        }
+        .contact-link .icon {
+            font-size: 1.4rem;
+            width: 36px;
+            text-align: center;
+            color: var(--color-coral);
+            flex-shrink: 0;
+        }
+
+        /* ============================================================
+                   ФУТЕР
+                   ============================================================ */
+        footer {
+            background: var(--color-text);
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            padding: 2.2rem 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        footer span {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        /* ============================================================
+                   АДАПТИВ
+                   ============================================================ */
+        @media (max-width: 992px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .hero-photo img {
+                height: 420px;
+            }
+            .hero-content h1 {
+                font-size: 3.2rem;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            .advantages-grid {
+                grid-template-columns: 1fr;
+                gap: 0.4rem;
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                font-size: 16px;
+            }
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 68px;
+                left: 0;
+                right: 0;
+                background: var(--color-white);
+                padding: 1.8rem 24px;
+                border-bottom: 1px solid var(--color-border);
+                gap: 1.2rem;
+                align-items: center;
+                box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .burger {
+                display: flex;
+            }
+
+            .hero-content h1 {
+                font-size: 2.6rem;
+            }
+            .hero-content .subtitle {
+                font-size: 1.2rem;
+            }
+            .hero-content .description {
+                font-size: 0.95rem;
+            }
+            .hero-photo img {
+                height: 320px;
+            }
+
+            .review-slide {
+                padding: 1.8rem 1.5rem;
+                min-height: 200px;
+            }
+            .review-slide .review-text {
+                font-size: 0.95rem;
+            }
+            .review-slide .review-author {
+                font-size: 0.85rem;
+            }
+
+            .carousel-slide {
+                height: 220px;
+            }
+
+            .btn-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .btn {
+                justify-content: center;
+                font-size: 0.95rem;
+                padding: 0.7rem 1.8rem;
+            }
+
+            .exp-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.4rem;
+            }
+            .exp-header h3 {
+                font-size: 1.1rem;
+            }
+            .exp-header .exp-period {
+                font-size: 0.75rem;
+            }
+            .exp-age {
+                font-size: 0.85rem;
+            }
+            .exp-duties {
+                font-size: 0.9rem;
+            }
+            .exp-results {
+                font-size: 0.9rem;
+                padding: 0.6rem 1rem;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+            .section-sub {
+                font-size: 0.95rem;
+                margin-bottom: 2rem;
+            }
+
+            .advantages-grid {
+                padding: 1.2rem;
+                gap: 0.2rem;
+            }
+            .advantage-item {
+                font-size: 0.9rem;
+                padding: 0.4rem 0;
+                font-weight: 600;
+            }
+
+            .contact-link {
+                padding: 0.7rem 1rem;
+                font-size: 0.9rem;
+            }
+            .contact-link .icon {
+                font-size: 1.2rem;
+                width: 32px;
+            }
+
+            .carousel-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1.2rem;
+            }
+            .carousel-btn.prev {
+                left: 8px;
+            }
+            .carousel-btn.next {
+                right: 8px;
+            }
+
+            #about .about-text p {
+                font-size: 0.95rem;
+                padding-left: 0.8rem;
+            }
+            .about-tag {
+                font-size: 0.7rem;
+                padding: 0.2rem 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 15px;
+            }
+            .container {
+                padding: 0 16px;
+            }
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+            .hero-content .subtitle {
+                font-size: 1.1rem;
+            }
+            .hero-photo img {
+                height: 260px;
+            }
+            .exp-item {
+                padding: 1.2rem;
+            }
+            .exp-results {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+            #about .about-text p {
+                padding-left: 0.6rem;
+                font-size: 0.9rem;
+            }
+            .carousel-slide {
+                height: 180px;
+            }
+            .review-slide .review-text {
+                font-size: 0.9rem;
+            }
+            .review-slide {
+                padding: 1.2rem 1rem;
+                min-height: 160px;
+            }
+            .carousel-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 1rem;
+            }
+            .carousel-btn.prev {
+                left: 4px;
+            }
+            .carousel-btn.next {
+                right: 4px;
+            }
+            .advantages-grid {
+                padding: 0.8rem;
+            }
+            .advantage-item {
+                font-size: 0.8rem;
+                gap: 0.5rem;
+            }
+            .advantage-item .check {
+                font-size: 1rem;
+                width: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-      <video class="bg-video" autoplay muted loop playsinline>
-    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-  </video>
 
-<!-- ===== NAV ===== -->
-<nav>
-  <div class="nav-logo">Валерия</div>
-  <ul class="nav-links" id="navLinks">
-    <li><a href="#about">Обо мне</a></li>
-    <li><a href="#character">Характер</a></li>
-    <li><a href="#experience">Опыт</a></li>
-    <li><a href="#reviews">Отзывы</a></li>
-    <li><a href="#why">Почему я</a></li>
-    <li><a href="#contact">Контакты</a></li>
-  </ul>
-  <button class="burger" id="burger" aria-label="Меню">
-    <span></span><span></span>
-  </button>
-</nav>
-
-<!-- ===== HERO ===== -->
-<section id="hero">
-  <div class="hero-inner">
-    <div class="hero-avatar">👩‍🍼</div>
-    <div class="hero-tag">Няня с трехлетним стажем</div>
-    <h1>Валерия</h1>
-    <p class="hero-sub">Забота, развитие и безопасность для вашего малыша —<br>с любовью и профессионализмом</p>
-    <div class="btn-group">
-      <a href="#contact" class="btn">Связаться со мной</a>
-      <a href="#why" class="btn btn-outline">Почему я</a>
-    </div>
-  </div>
-</section>
-
-<!-- ===== ОБО МНЕ ===== -->
-<section id="about">
-  <div class="container">
-    <div class="about-grid">
-      <div class="about-text">
-        <div class="section-label">Обо мне</div>
-        <h2>Немного о себе</h2>
-        <div class="divider"></div>
-        <p><strong>Здравствуйте! Меня зовут Валерия, мне 21 год.</strong></p>
-        <p>С самого детства мне доверяли присмотр за родными и двоюродными братьями. Все по маминой линии — учителя, так что педагогика у меня в крови. Всё время учебы я работала няней и присматривала за детьми школьного возраста: делала уроки, гуляла, занималась. Последний год в Москве преимущественно работаю с малышами 2–4 лет. Люблю заниматься с ними творчеством, гулять и развивать.</p>
-      </div>
-      <div class="about-card">
-        <div class="about-item">
-          <div class="about-icon"></div>
-          <div><strong>Педагогические корни</strong><span>Мама и бабушка — учителя, педагогика в крови</span></div>
+    <!-- ===== НАВИГАЦИЯ ===== -->
+    <nav>
+        <div class="container nav-inner">
+            <div class="nav-logo">Валерия</div> <!-- изменено имя -->
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#experience">Опыт</a></li>
+                <li><a href="#why">Преимущества</a></li>
+                <li><a href="#about">О себе</a></li>
+                <li><a href="#reviews">Отзывы</a></li>
+                <li><a href="#contact" class="nav-btn">Контакты</a></li>
+            </ul>
+            <button class="burger" id="burger" aria-label="Меню">
+                <span></span><span></span><span></span>
+            </button>
         </div>
-        <div class="about-item">
-          <div class="about-icon"></div>
-          <div><strong>Сертификат первой помощи</strong><span>Прошла курс, готова к любым ситуациям</span></div>
+    </nav>
+
+    <!-- ===== ГЛАВНЫЙ ЭКРАН ===== -->
+    <section id="hero">
+        <div class="container hero-grid">
+            <div class="hero-photo">
+                <img src="IMG_20250910_185515.webp" alt="Валерия" />
+            </div>
+            <div class="hero-content">
+                <span class="tag">Няня для детей от 1 до 3 лет</span> <!-- убран смайлик -->
+                <h1>Валерия</h1> <!-- изменено имя -->
+                <p class="subtitle">Забота, развитие и безопасность</p>
+                <p class="description">
+                    Три года опыта работы с малышами. Спокойная, ответственная, с педагогическим подходом. Готова стать вашей надёжной опорой.
+                </p>
+                <div class="btn-group">
+                    <a href="#contact" class="btn btn-primary">Связаться</a>
+                    <a href="#why" class="btn btn-outline">Преимущества</a> <!-- изменено название и ссылка -->
+                </div>
+            </div>
         </div>
-        <div class="about-item">
-          <div class="about-icon"></div>
-          <div><strong>Творческий подход</strong><span>Рисование, лепка, оригами — развиваемся играя</span></div>
+    </section>
+
+    <!-- ===== ОПЫТ РАБОТЫ – убрали .section-label ===== -->
+    <section id="experience">
+        <div class="container">
+            <h2>Мой <span class="accent">опыт</span></h2>
+            <div class="divider"></div>
+
+            <div class="experience-list">
+                <div class="exp-item">
+                    <div class="exp-header">
+                        <h3>Семья 1</h3>
+                        <span class="exp-period">сентябрь 2025 – май 2026</span>
+                    </div>
+                    <div class="exp-age">Девочка, 2 года</div>
+                    <div class="exp-duties">
+                        <strong>Обязанности:</strong> соблюдение режима дня: сон, питание, прогулки. Приготовление еды и кормление, уход. Организация развивающих занятий: лепка, чтение, игры. Развитие речи и социальных навыков. Поддержание чистоты детских вещей и комнаты.
+                    </div>
+                    <div class="exp-results">
+                        <strong>📌 Результаты:</strong> наладила дневной и ночной сон с помощью ритуалов (купание, чтение сказки), время засыпания сократилось. Активно занималась развитием речи, благодаря этому словарный запас вырос с 10 слов до 45.
+                    </div>
+                </div>
+
+                <div class="exp-item">
+                    <div class="exp-header">
+                        <h3>Семья 2</h3>
+                        <span class="exp-period">июнь 2026 – август 2026</span>
+                    </div>
+                    <div class="exp-age">Девочка, 1 год 2 месяца</div>
+                    <div class="exp-duties">
+                        <strong>Обязанности:</strong> обеспечивала полный уход в ночное время: кормление, контроль комфорта, смена подгузников. Поддержание спокойного и безопасного сна. Быстро реагировала на пробуждение и капризы.
+                    </div>
+                    <div class="exp-results">
+                        <strong>📌 Результаты:</strong> безопасный сон ребёнка.
+                    </div>
+                </div>
+
+                <div class="exp-item">
+                    <div class="exp-header">
+                        <h3>Семья 3</h3>
+                        <span class="exp-period">декабрь 2024 – июнь 2025</span>
+                    </div>
+                    <div class="exp-age">Мальчик, 2 года</div>
+                    <div class="exp-duties">
+                        <strong>Обязанности:</strong> режим дня: сон, кормление, прогулки. Обеспечивала безопасность, спокойствие и интересное времяпрепровождение. Иногда помогала по дому: уборка, поддержание порядка, стирка, глажка и мелкие бытовые задачи.
+                    </div>
+                    <div class="exp-results">
+                        <strong>📌 Результаты:</strong> внедрила систему уборки игрушек, после каждой игры убирали вместе в игровой форме. Таким образом ребёнок привык к порядку. Благодаря ежедневным занятиям мальчик уверенно различал 4 основных цвета.
+                    </div>
+                </div>
+
+                <div class="exp-item">
+                    <div class="exp-header">
+                        <h3>Семья 4</h3>
+                        <span class="exp-period">апрель 2023 – декабрь 2024</span>
+                    </div>
+                    <div class="exp-age">Девочка, 8 лет</div>
+                    <div class="exp-duties">
+                        <strong>Обязанности:</strong> забирала и отводила в школу, обеспечивая безопасное и комфортное время в пути. Помогала с выполнением домашних заданий, объясняла материал, помогала с учебным процессом. Организовывала досуг: вместе ходили на мероприятия, музеи, играли в настольные игры.
+                    </div>
+                    <div class="exp-results">
+                        <strong>📌 Результаты:</strong> благодаря систематической помощи с уроками у девочки исчез страх перед сложными темами. Привила интерес к школьным предметам. Благодаря расписанию девочка стала более организованной.
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="about-item">
-          <div class="about-icon"></div>
-          <div><strong>Полная готовность</strong><span>Нет аллергии, работа с животными, готова к поездкам</span></div>
+    </section>
+
+    <!-- ===== ПРЕИМУЩЕСТВА – убрали .section-label ===== -->
+    <section id="why">
+        <div class="container">
+            <h2>Мои <span class="accent">преимущества</span> и документы</h2>
+            <div class="divider"></div>
+
+            <div class="advantages-grid">
+                <div class="advantage-item"><span class="check">✓</span> <span>Сертификат первой помощи детям</span></div>
+                <div class="advantage-item"><span class="check">✓</span> <span>Нет вредных привычек</span></div>
+                <div class="advantage-item"><span class="check">✓</span> <span>Свежая медицинская книжка</span></div>
+                <div class="advantage-item"><span class="check">✓</span> <span>Готова к доп. анализам</span></div>
+                <div class="advantage-item"><span class="check">✓</span> <span>Есть загранпаспорт</span></div>
+                <div class="advantage-item"><span class="check">✓</span> <span>Не привязана к месту</span></div>
+                <div class="advantage-item"><span class="check">✓</span> <span>Справка об отсутствии судимости</span></div>
+                <div class="advantage-item"><span class="check">✓</span> <span>Справки ПНД и ПНД</span></div>
+                <div class="advantage-item"><span class="check">✓</span> <span>Работа с проживанием или без</span></div>
+                <div class="advantage-item"><span class="check">✓</span> <span>Готова к зарубежным поездкам</span></div>
+            </div>
+
+            <!-- Карусель документов -->
+            <div class="carousel-wrapper" id="docCarousel">
+                <div class="carousel-track" id="docTrack"></div>
+                <button class="carousel-btn prev" onclick="moveCarousel('doc', -1)">‹</button>
+                <button class="carousel-btn next" onclick="moveCarousel('doc', 1)">›</button>
+                <div class="carousel-dots" id="docDots"></div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- ===== ХАРАКТЕР И ХОББИ + КАРУСЕЛЬ ФОТО ===== -->
-<section id="character" style="background: var(--c2);">
-  <div class="container">
-    <div class="section-label">Характер и увлечения</div>
-    <h2>Какая я в работе и в жизни</h2>
-    <div class="divider"></div>
-    <p>По характеру я спокойная, но не холодная: умею держать субординацию, а в нужный момент — искренне радоваться победам ребёнка, весело танцевать или поддержать его эмоционально.</p>
-    <p><strong>Моё главное качество — спокойная уверенность.</strong> Я не повышаю голос, но умею быть требовательной, когда это нужно. Это помогает ребёнку чувствовать себя в безопасности и одновременно учиться дисциплине.</p>
-    <p>Я легко нахожу общий язык с детьми, потому что умею слушать и слышать. Благодаря этому даже самый стеснительный малыш быстро раскрывается и начинает доверять.</p>
-    <p><strong>Мои сильные стороны:</strong> коммуникабельность, пунктуальность, быстро нахожу общий язык с детьми.</p>
-    <p><strong>Хобби:</strong> рисование, творческие мастер-классы, чтение.</p>
+    <!-- ===== О СЕБЕ – убрали .section-label ===== -->
+    <section id="about">
+        <div class="container">
+            <h2>Мой характер и <span class="accent">увлечения</span></h2>
+            <div class="divider"></div>
 
-    <!-- Карусель фотографий (ваши фото) -->
-    <div class="carousel" id="photoCarousel">
-      <div class="carousel-track" id="photoTrack">
-        <div class="carousel-slide">
-          <img src="https://via.placeholder.com/600x400?text=Фото+1" alt="Фото Валерии 1" />
-          <div class="slide-text">Творчество с детьми</div>
+            <div class="about-text">
+                <p><strong>По характеру</strong> я спокойная, но не холодная: умею держать субординацию, а в нужный момент — искренне радоваться победам ребёнка, весело танцевать или поддержать его эмоционально.</p>
+                <p><strong>Моё главное качество — спокойная уверенность.</strong> Я не повышаю голос, но умею быть требовательной, когда это нужно. Это помогает ребёнку чувствовать себя в безопасности и одновременно учиться дисциплине.</p>
+                <p>Я легко нахожу общий язык с детьми, потому что умею слушать и слышать. Даже самый стеснительный малыш быстро раскрывается и начинает доверять.</p>
+                <p><strong>Сильные стороны:</strong> коммуникабельность, пунктуальность, быстрая адаптация.</p>
+                <p><strong>Образование:</strong> педагогическое образование, курсы детской психологии.</p>
+                <p><strong>Хобби:</strong> рисование, творческие мастер-классы, чтение. Люблю придумывать новые игры и занятия для детей.</p>
+
+                <div class="about-tags">
+                    <span class="about-tag">🧘 Спокойная</span>
+                    <span class="about-tag">🤝 Отзывчивая</span>
+                    <span class="about-tag">🎨 Креативная</span>
+                    <span class="about-tag">⏰ Пунктуальная</span>
+                    <span class="about-tag">📚 Педагог</span>
+                </div>
+            </div>
         </div>
-        <div class="carousel-slide">
-          <img src="https://via.placeholder.com/600x400?text=Фото+2" alt="Фото Валерии 2" />
-          <div class="slide-text">Прогулки и игры</div>
+    </section>
+
+    <!-- ===== ОТЗЫВЫ – убрали .section-label ===== -->
+    <section id="reviews">
+        <div class="container">
+            <h2>Что говорят <span class="accent">родители</span></h2>
+            <div class="divider"></div>
+
+            <div class="carousel-wrapper" id="reviewCarousel">
+                <div class="carousel-track" id="reviewTrack"></div>
+                <button class="carousel-btn prev" onclick="moveCarousel('review', -1)">‹</button>
+                <button class="carousel-btn next" onclick="moveCarousel('review', 1)">›</button>
+                <div class="carousel-dots" id="reviewDots"></div>
+            </div>
         </div>
-        <div class="carousel-slide">
-          <img src="https://via.placeholder.com/600x400?text=Фото+3" alt="Фото Валерии 3" />
-          <div class="slide-text">Развивающие занятия</div>
+    </section>
+
+    <!-- ===== КОНТАКТЫ – убрали .section-label ===== -->
+    <section id="contact">
+        <div class="container contact-grid">
+            <div class="contact-info">
+                <h2>Давайте <span class="accent">познакомимся</span></h2>
+                <div class="divider"></div>
+                <p>Готова ответить на все вопросы, обсудить условия и приехать на знакомство. Напишите или позвоните — отвечаю быстро 🌸</p>
+
+                <div class="contact-links">
+                    <a href="tel:+79526806934" class="contact-link">
+                        <span class="icon">📞</span> <span>8 952 680 69 34</span>
+                    </a>
+                    <a href="mailto:ponkina2005@gmail.com" class="contact-link">
+                        <span class="icon">✉️</span> <span>ponkina2005@gmail.com</span>
+                    </a>
+                    <a href="https://wa.me/79526806934" target="_blank" class="contact-link">
+                        <span class="icon">💬</span> <span>WhatsApp</span>
+                    </a>
+                    <a href="#" class="contact-link">
+                        <span class="icon">✈️</span> <span>Telegram: @ваш_ник</span>
+                    </a>
+                    <a href="#" class="contact-link">
+                        <span class="icon">📍</span> <span>Москва, готова к выезду</span>
+                    </a>
+                </div>
+            </div>
+            <!-- Форма удалена по требованию -->
         </div>
-      </div>
-      <button class="carousel-btn prev" onclick="moveCarousel('photo', -1)">‹</button>
-      <button class="carousel-btn next" onclick="moveCarousel('photo', 1)">›</button>
-      <div class="carousel-dots" id="photoDots"></div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- ===== ОПЫТ РАБОТЫ ===== -->
-<section id="experience">
-  <div class="container">
-    <div class="section-label">Мой путь</div>
-    <h2>Опыт работы</h2>
-    <div class="divider"></div>
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="tl-dot-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
-        <div class="tl-content">
-          <div class="tl-period">Апрель 2023 – Декабрь 2024</div>
-          <h3>Первая семья — девочка, 8 лет</h3>
-          <p>Встреча и проводы в школу, безопасность в пути. Помощь с домашними заданиями. В свободное время — музеи, выставки, настольные игры, рисование.</p>
+    <!-- ===== ФУТЕР ===== -->
+    <footer>
+        <div class="container">
+            © 2026 <span>Валерия</span> · Профессиональная няня с педагогическим подходом 💕
         </div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
-        <div class="tl-content">
-          <div class="tl-period">Декабрь 2024 – Май 2025</div>
-          <h3>Вторая семья — мальчик, 2 года</h3>
-          <p>Акцент на безопасности, спокойствии и интересном досуге. Кормление, режим, творческие занятия. Помощь по дому: уборка, готовка, порядок. Создавала комфортную атмосферу, чтобы мама была спокойна.</p>
-        </div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
-        <div class="tl-content">
-          <div class="tl-period">Сентябрь 2025 – Май 2026</div>
-          <h3>Третья семья — девочка, 3 года</h3>
-          <p>Чёткий режим (сон, питание, прогулки). Готовка, гигиена. Развивающие занятия: рисование, лепка, чтение, подвижные игры. Развитие речи и социальных навыков. Уборка детской комнаты. Регулярная обратная связь с родителями.</p>
-        </div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot-col"><div class="tl-dot"></div></div>
-        <div class="tl-content">
-          <div class="tl-period">Дополнительно</div>
-          <p>Также был опыт краткосрочных подработок с разными детьми (совмещала несколько семей). При встрече расскажу подробнее.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+    </footer>
 
-<!-- ===== ОБЯЗАННОСТИ (АККОРДЕОН) ===== -->
-<section id="duties" style="background: var(--c2);">
-  <div class="container">
-    <div class="section-label">Что я делаю</div>
-    <h2>Мои обязанности</h2>
-    <div class="divider"></div>
-    <div class="accordion" id="dutiesAccordion">
-      <div class="accordion-header" onclick="toggleAccordion()">
-        <span>Полный список услуг (нажмите, чтобы раскрыть)</span>
-        <span class="arrow" id="accordionArrow">▼</span>
-      </div>
-      <div class="accordion-body" id="accordionBody">
-        <ul>
-          <li>Прогулки на свежем воздухе с учётом погоды и возраста</li>
-          <li>Сопровождение на занятия, в кружки, поездки на метро и такси</li>
-          <li>Полный уход: умывание, переодевание, гигиена</li>
-          <li>Подготовка простых и полезных приёмов пищи</li>
-          <li>Развивающие игры: настольные, подвижные, творческие (рисование, лепка, оригами, аппликации)</li>
-          <li>Помощь с домашними заданиями для младших школьников</li>
-          <li>Чтение книг по возрасту, развитие речи и кругозора</li>
-          <li>Контроль распорядка дня и сна</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
+    <!-- ============================================================
+    JAVASCRIPT
+    ============================================================ -->
+    <script>
+        // ===== БУРГЕР =====
+        document.getElementById('burger').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+        document.querySelectorAll('.nav-links a').forEach(a => {
+            a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
+        });
 
-<!-- ===== ОТЗЫВЫ (карусель + кнопка) ===== -->
-<section id="reviews">
-  <div class="container">
-    <div class="section-label">Отзывы</div>
-    <h2>Что говорят родители</h2>
-    <div class="divider"></div>
+        // ===== КАРУСЕЛИ =====
+        const carousels = {};
 
-    <div class="carousel" id="reviewCarousel">
-      <div class="carousel-track" id="reviewTrack">
-        <!-- Отзывы будут добавлены через JS, но для примера заполним -->
-      </div>
-      <button class="carousel-btn prev" onclick="moveCarousel('review', -1)">‹</button>
-      <button class="carousel-btn next" onclick="moveCarousel('review', 1)">›</button>
-      <div class="carousel-dots" id="reviewDots"></div>
-    </div>
+        function initCarousel(id, slidesData, slideRenderer) {
+            const track = document.getElementById(id + 'Track');
+            const dotsContainer = document.getElementById(id + 'Dots');
+            if (!track || !dotsContainer) return;
 
-    <div style="text-align: center; margin-top: 1.2rem;">
-      <button class="btn" onclick="openReviewModal()">✏️ Оставить отзыв</button>
-    </div>
-    <p style="text-align:center; font-size:.8rem; color: var(--text-light); margin-top: .5rem;">
-      Ваш отзыв появится здесь после отправки (сохраняется локально)
-    </p>
-  </div>
-</section>
+            track.innerHTML = '';
+            slidesData.forEach((item, index) => {
+                const slide = document.createElement('div');
+                slide.className = 'carousel-slide';
+                if (id === 'review') slide.classList.add('review-slide');
+                slide.innerHTML = slideRenderer(item, index);
+                track.appendChild(slide);
+            });
 
-<!-- ===== ПОЧЕМУ ИМЕННО Я (с фото сертификатов) ===== -->
-<section id="why" style="background: var(--c2);">
-  <div class="container">
-    <div class="section-label">Почему именно я</div>
-    <h2>Ваши преимущества</h2>
-    <div class="divider"></div>
-    <ul style="list-style: none; margin-bottom: 1.5rem;">
-      <li style="padding: .4rem 0;">✅ Есть сертификат оказания первой помощи детям — вы можете не волноваться за безопасность вашего ребенка</li>
-      <li style="padding: .4rem 0;">✅ Не привязана к месту, готова к перемещениям и путешествиям с семьей</li>
-      <li style="padding: .4rem 0;">✅ Рассматриваю работу как с проживанием, так и без, а также вахтовый метод</li>
-      <li style="padding: .4rem 0;">✅ Нет аллергии, возможна работа с животными</li>
-      <li style="padding: .4rem 0;">✅ Нет вредных привычек</li>
-      <li style="padding: .4rem 0;">✅ Загранпаспорт в процессе получения — готова к зарубежным поездкам</li>
-      <li style="padding: .4rem 0;">✅ Готова пройти любое медицинское обследование за счёт работодателя</li>
-    </ul>
+            const total = slidesData.length;
+            let current = 0;
 
-    <!-- Галерея фото сертификатов и других подтверждений -->
-    <div class="gallery-grid" id="certGallery">
-      <!-- Замените src на свои реальные фото -->
-      <img src="https://via.placeholder.com/300x200?text=Сертификат+1" alt="Сертификат первой помощи" />
-      <img src="https://via.placeholder.com/300x200?text=Сертификат+2" alt="Дополнительный сертификат" />
-      <img src="https://via.placeholder.com/300x200?text=Фото+с+занятий" alt="Занятия с детьми" />
-      <img src="https://via.placeholder.com/300x200?text=Рекомендация" alt="Рекомендательное письмо" />
-    </div>
-  </div>
-</section>
+            dotsContainer.innerHTML = '';
+            for (let i = 0; i < total; i++) {
+                const dot = document.createElement('button');
+                dot.className = 'dot' + (i === 0 ? ' active' : '');
+                dot.dataset.index = i;
+                dot.addEventListener('click', () => goTo(i));
+                dotsContainer.appendChild(dot);
+            }
 
-<!-- ===== ВИДЕО ===== -->
-<section id="video">
-  <div class="container">
-    <div class="section-label">Видео-знакомство</div>
-    <h2>Посмотрите, как я работаю</h2>
-    <div class="divider"></div>
-    <div class="video-wrapper">
-      <!-- Замените src на ваше видео (горизонтальное) -->
-      <video controls preload="metadata">
-        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
-        Ваш браузер не поддерживает видео.
-      </video>
-    </div>
-    <p style="text-align:center; font-size:.85rem; color: var(--text-light);">Короткое видео о моём подходе к детям</p>
-  </div>
-</section>
+            function goTo(index) {
+                if (index < 0) index = total - 1;
+                if (index >= total) index = 0;
+                current = index;
+                track.style.transform = 'translateX(-' + (current * 100) + '%)';
+                document.querySelectorAll('#' + id + 'Dots .dot').forEach((d, i) => {
+                    d.classList.toggle('active', i === current);
+                });
+            }
 
-<!-- ===== КОНТАКТЫ ===== -->
-<section id="contact">
-  <div class="container">
-    <div class="contact-inner">
-      <div class="contact-info">
-        <div class="section-label">Свяжитесь со мной</div>
-        <h2>Давайте познакомимся</h2>
-        <div class="divider"></div>
-        <p>Готова ответить на все вопросы, обсудить условия и приехать на знакомство. Напишите или позвоните — отвечаю быстро 🌸</p>
-        <div class="contact-links">
-          <a href="tel:+79526806934" class="contact-link">
-            <span class="contact-link-icon">📞</span>
-            <span>8 952 680 69 34</span>
-          </a>
-          <a href="mailto:ponkina2005@gmail.com" class="contact-link">
-            <span class="contact-link-icon">✉️</span>
-            <span>ponkina2005@gmail.com</span>
-          </a>
-          <a href="https://wa.me/79526806934" target="_blank" class="contact-link">
-            <span class="contact-link-icon">💬</span>
-            <span>WhatsApp</span>
-          </a>
-          <a href="#" class="contact-link">
-            <span class="contact-link-icon">✈️</span>
-            <span>Telegram: @ваш_ник</span>
-          </a>
-          <a href="#" class="contact-link">
-            <span class="contact-link-icon">📍</span>
-            <span>Москва, готова к выезду</span>
-          </a>
-        </div>
-      </div>
-      <!-- Форма обратной связи (просто для красоты) -->
-      <form onsubmit="handleForm(event)">
-        <input type="text" placeholder="Ваше имя" required />
-        <input type="tel" placeholder="Номер телефона" />
-        <input type="text" placeholder="Возраст ребёнка" />
-        <textarea placeholder="Расскажите о ваших пожеланиях..."></textarea>
-        <button type="submit" class="btn" style="border:none;cursor:pointer;width:100%;text-align:center;">Отправить сообщение</button>
-      </form>
-    </div>
-  </div>
-</section>
+            window['moveCarousel_' + id] = function(dir) {
+                goTo(current + dir);
+            };
 
-<!-- ===== МОДАЛЬНОЕ ОКНО ДЛЯ ОТЗЫВОВ ===== -->
-<div class="modal-overlay" id="reviewModal">
-  <div class="modal">
-    <button class="modal-close" onclick="closeReviewModal()">&times;</button>
-    <h3>Оставить отзыв</h3>
-    <form id="reviewForm" onsubmit="addReview(event)">
-      <input type="text" id="reviewName" placeholder="Ваше имя" required />
-      <textarea id="reviewText" placeholder="Напишите ваш отзыв..." required></textarea>
-      <button type="submit" class="btn" style="width:100%;">Отправить отзыв</button>
-    </form>
-  </div>
-</div>
+            let autoInterval = setInterval(() => {
+                goTo(current + 1);
+            }, 5000);
 
-<!-- ===== FOOTER ===== -->
-<footer>
-  <p>© 2026 Валерия · Няня с педагогическим подходом 🌸 Сделано с заботой</p>
-</footer>
+            const wrapper = track.closest('.carousel-wrapper');
+            if (wrapper) {
+                wrapper.addEventListener('mouseenter', () => clearInterval(autoInterval));
+                wrapper.addEventListener('mouseleave', () => {
+                    autoInterval = setInterval(() => {
+                        goTo(current + 1);
+                    }, 5000);
+                });
+            }
 
-<!-- ================================================== -->
-<!-- ===== JAVASCRIPT ===== -->
-<script>
-  // ===== Бургер-меню =====
-  document.getElementById('burger').addEventListener('click', function() {
-    document.getElementById('navLinks').classList.toggle('open');
-  });
-  document.querySelectorAll('.nav-links a').forEach(a => {
-    a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
-  });
+            goTo(0);
+            carousels[id] = { goTo: goTo, current: current, total: total };
+        }
 
-  // ===== Аккордеон для обязанностей =====
-  function toggleAccordion() {
-    const body = document.getElementById('accordionBody');
-    const arrow = document.getElementById('accordionArrow');
-    if (body.style.maxHeight) {
-      body.style.maxHeight = null;
-      arrow.classList.remove('open');
-    } else {
-      body.style.maxHeight = body.scrollHeight + 'px';
-      arrow.classList.add('open');
-    }
-  }
+        // ===== ОТЗЫВЫ =====
+        const reviews = [{
+            name: 'Мария К.',
+            text: 'Няня — это находка! Наш сын обожает её, просит «позвонить няне» по выходным. Порядок, развитие, любовь — всё на высшем уровне.'
+        }, {
+            name: 'Алексей и Ольга П.',
+            text: 'Доверяем няне полностью. За год ни разу не разочаровались. Дочь пошла в школу подготовленной — во многом благодаря занятиям с ней.'
+        }, {
+            name: 'Елена Н.',
+            text: 'Спокойная, ответственная, креативная. Няня придумывает такие игры, что даже мы, родители, хотим участвовать! Очень рекомендуем.'
+        }];
 
-  // ===== Карусели (фото и отзывы) =====
-  const carousels = {};
+        function reviewRenderer(item) {
+            return `
+                            <div class="stars">★★★★★</div>
+                            <p class="review-text">${item.text}</p>
+                            <div class="review-author">— ${item.name}</div>
+                        `;
+        }
 
-  function initCarousel(id, slidesData, slideRenderer) {
-    const track = document.getElementById(id + 'Track');
-    const dotsContainer = document.getElementById(id + 'Dots');
-    if (!track || !dotsContainer) return;
+        // ===== ФОТО ДЛЯ КАРУСЕЛИ ДОКУМЕНТОВ (замените на свои пути) =====
+        const docPhotos = [
+            'IMG_20260828_155504.webp',
+            'IMG_7904.HEIC.webp',
+            'photo_2026-08-10_16-09-04.jpg',
+            'photo_2026-08-10_16-10-43.jpg'
+        ];
 
-    // Очищаем трек
-    track.innerHTML = '';
-    // Заполняем слайдами
-    slidesData.forEach((item, index) => {
-      const slide = document.createElement('div');
-      slide.className = 'carousel-slide';
-      slide.innerHTML = slideRenderer(item, index);
-      track.appendChild(slide);
-    });
+        function imgRenderer(src) {
+            return '<img src="' + src + '" alt="Документ" />';
+        }
 
-    const total = slidesData.length;
-    let current = 0;
+        // ===== ИНИЦИАЛИЗАЦИЯ =====
+        document.addEventListener('DOMContentLoaded', function() {
+            initCarousel('review', reviews, reviewRenderer);
+            initCarousel('doc', docPhotos, imgRenderer);
 
-    // Создаём точки
-    dotsContainer.innerHTML = '';
-    for (let i = 0; i < total; i++) {
-      const dot = document.createElement('button');
-      dot.className = 'dot' + (i === 0 ? ' active' : '');
-      dot.dataset.index = i;
-      dot.addEventListener('click', () => goTo(i));
-      dotsContainer.appendChild(dot);
-    }
-
-    function goTo(index) {
-      if (index < 0) index = total - 1;
-      if (index >= total) index = 0;
-      current = index;
-      track.style.transform = `translateX(-${current * 100}%)`;
-      document.querySelectorAll(`#${id}Dots .dot`).forEach((d, i) => {
-        d.classList.toggle('active', i === current);
-      });
-    }
-
-    // Сохраняем функции для кнопок
-    window['moveCarousel_' + id] = function(dir) {
-      goTo(current + dir);
-    };
-
-    // Инициализируем
-    goTo(0);
-    carousels[id] = { goTo, current, total };
-    // Для кнопок добавим обработчики через глобальные функции, но проще через onclick в HTML
-  }
-
-  // ===== Фото-карусель =====
-  const photoSlides = [
-    { img: 'https://via.placeholder.com/600x400?text=Фото+1', caption: 'Творчество с детьми' },
-    { img: 'https://via.placeholder.com/600x400?text=Фото+2', caption: 'Прогулки и игры' },
-    { img: 'https://via.placeholder.com/600x400?text=Фото+3', caption: 'Развивающие занятия' }
-  ];
-  function photoRenderer(item) {
-    return `<img src="${item.img}" alt="${item.caption}" /><div class="slide-text">${item.caption}</div>`;
-  }
-
-  // ===== Отзывы (с localStorage) =====
-  let reviews = [];
-  function loadReviews() {
-    const stored = localStorage.getItem('valeria_reviews');
-    if (stored) {
-      try { reviews = JSON.parse(stored); } catch(e) { reviews = []; }
-    }
-    if (reviews.length === 0) {
-      // Начальные отзывы
-      reviews = [
-        { name: 'Мария К.', text: 'Валерия — это находка! Наш сын обожает её, просит «позвонить Валерии» по выходным. Порядок, развитие, любовь — всё на высшем уровне.' },
-        { name: 'Алексей и Ольга П.', text: 'Доверяем Валерии полностью. За год ни разу не разочаровались. Дочь пошла в школу подготовленной — во многом благодаря занятиям с ней.' },
-        { name: 'Елена Н.', text: 'Спокойная, ответственная, креативная. Валерия придумывает такие игры, что даже мы, родители, хотим участвовать! Очень рекомендуем.' }
-      ];
-      saveReviews();
-    }
-  }
-  function saveReviews() {
-    localStorage.setItem('valeria_reviews', JSON.stringify(reviews));
-  }
-
-  function reviewRenderer(item, index) {
-    return `
-      <div class="stars">★★★★★</div>
-      <p class="review-text">«${item.text}»</p>
-      <div class="review-author">— ${item.name}</div>
-    `;
-  }
-
-  // Инициализация после загрузки DOM
-  document.addEventListener('DOMContentLoaded', function() {
-    // Загружаем отзывы
-    loadReviews();
-    // Инициализируем фото-карусель
-    initCarousel('photo', photoSlides, photoRenderer);
-    // Инициализируем карусель отзывов
-    initCarousel('review', reviews, reviewRenderer);
-
-    // Глобальные функции для кнопок карусели
-    window.moveCarousel = function(type, dir) {
-      if (type === 'photo') {
-        const c = carousels['photo'];
-        if (c) c.goTo(c.current + dir);
-      } else if (type === 'review') {
-        const c = carousels['review'];
-        if (c) c.goTo(c.current + dir);
-      }
-    };
-  });
-
-  // ===== Модальное окно для отзыва =====
-  function openReviewModal() {
-    document.getElementById('reviewModal').classList.add('open');
-  }
-  function closeReviewModal() {
-    document.getElementById('reviewModal').classList.remove('open');
-  }
-  // Закрытие по клику на фон
-  document.getElementById('reviewModal').addEventListener('click', function(e) {
-    if (e.target === this) closeReviewModal();
-  });
-
-  // ===== Добавление отзыва =====
-  function addReview(e) {
-    e.preventDefault();
-    const name = document.getElementById('reviewName').value.trim();
-    const text = document.getElementById('reviewText').value.trim();
-    if (!name || !text) return;
-
-    // Добавляем в массив
-    reviews.push({ name, text });
-    saveReviews();
-
-    // Обновляем карусель
-    const track = document.getElementById('reviewTrack');
-    const slide = document.createElement('div');
-    slide.className = 'carousel-slide';
-    slide.innerHTML = reviewRenderer({ name, text }, reviews.length - 1);
-    track.appendChild(slide);
-
-    // Обновляем точки
-    const dotsContainer = document.getElementById('reviewDots');
-    const dot = document.createElement('button');
-    dot.className = 'dot';
-    dot.dataset.index = reviews.length - 1;
-    dot.addEventListener('click', function() {
-      const idx = parseInt(this.dataset.index);
-      const c = carousels['review'];
-      if (c) c.goTo(idx);
-    });
-    dotsContainer.appendChild(dot);
-
-    // Переключаем на последний слайд
-    const c = carousels['review'];
-    if (c) {
-      c.total = reviews.length;
-      c.goTo(reviews.length - 1);
-    }
-
-    // Закрываем модалку
-    closeReviewModal();
-    document.getElementById('reviewForm').reset();
-
-    // Показываем уведомление
-    alert('Спасибо за отзыв!');
-  }
-
-  // ===== Форма в контактах =====
-  function handleForm(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('button');
-    btn.textContent = '✓ Отправлено! Свяжусь скоро 🌸';
-    btn.style.background = '#b5c9a0';
-    setTimeout(() => {
-      btn.textContent = 'Отправить сообщение';
-      btn.style.background = '';
-      e.target.reset();
-    }, 3000);
-  }
-
-  // ===== Активная навигация при скролле =====
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-links a');
-  window.addEventListener('scroll', function() {
-    let current = '';
-    sections.forEach(s => {
-      const top = s.offsetTop - 80;
-      if (window.scrollY >= top) current = s.id;
-    });
-    navLinks.forEach(link => {
-      link.style.color = link.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
-    });
-  });
-</script>
+            window.moveCarousel = function(type, dir) {
+                const c = carousels[type];
+                if (c) c.goTo(c.current + dir);
+            };
+        });
+    </script>
 
 </body>
 </html>
