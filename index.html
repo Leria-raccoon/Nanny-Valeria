@@ -969,7 +969,44 @@
                 font-size: 0.9rem;
             }
         }
-    </style>
+    
+
+.hero-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,.85);
+    cursor: pointer;
+    z-index: 10;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.hero-arrow.prev { left: 15px; }
+.hero-arrow.next { right: 15px; }
+
+.photo-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.85);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+}
+.photo-modal.active { display:flex; }
+.photo-modal img {
+    max-width:95%;
+    max-height:90%;
+    object-fit:contain;
+}
+
+</style>
 </head>
 <body>
 
@@ -996,10 +1033,10 @@
         <div class="container hero-grid">
             <div class="hero-photo">
                 <!-- Слайдер – фото добавляются через JavaScript -->
-                <div class="hero-slider" id="heroSlider"></div>
+                <div class="hero-slider" id="heroSlider"><button class="hero-arrow prev" id="heroPrev">‹</button><button class="hero-arrow next" id="heroNext">›</button></div>
             </div>
             <div class="hero-content">
-                <span class="tag">Няня для детей от 1 до 3 лет</span>
+                <span class="tag">Няня для детей</span>
                 <h1>Няня</h1>
                 <p class="subtitle">Забота, развитие и безопасность</p>
                 <p class="description">
@@ -1196,7 +1233,7 @@
                     <a href="tel:+79526806934" class="contact-link">
                         <span class="icon">📞</span>
                         <span class="link-text">
-                            <span class="main"></span>
+                            <span class="main">+7 (952) 680 69 34</span>
                             <span class="sub">WhatsApp, Telegram, Viber, Макс</span>
                         </span>
                     </a>
@@ -1204,14 +1241,14 @@
                     <a href="mailto:ponkina2005@gmail.com" class="contact-link">
                         <span class="icon">✉️</span>
                         <span class="link-text">
-                            <span class="main">lkzsngg@gmail.com</span>
+                            <span class="main">ponkina2005@gmail.com</span>
                         </span>
                     </a>
 
                     <a href="https://t.me/deadline24" target="_blank" class="contact-link">
                         <span class="icon">✈️</span>
                         <span class="link-text">
-                            <span class="main">Telegram: @deadline24</span>
+                            <span class="main">Telegram: @NannyValeria </span>
                         </span>
                     </a>
 
@@ -1245,7 +1282,7 @@
         a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
     });
 
-    // ===== СЛАЙДЕР HERO =====
+    // ===== СЛАЙДЕР HERO БЕЗ АВТОПРОКРУТКИ =====
     (function() {
         const heroImages = [
             'главные фото/IMG_20250910_185515.webp',
@@ -1257,51 +1294,31 @@
         const sliderContainer = document.getElementById('heroSlider');
         if (!sliderContainer) return;
 
-        heroImages.forEach((src, index) => {
-            const img = document.createElement('img');
-            img.src = src;
-            img.alt = 'Фото ' + (index + 1);
-            img.className = 'hero-slide' + (index === 0 ? ' active' : '');
+        heroImages.forEach((src,index)=>{
+            const img=document.createElement('img');
+            img.src=src;
+            img.alt='Фото '+(index+1);
+            img.className='hero-slide'+(index===0?' active':'');
             sliderContainer.appendChild(img);
         });
 
-        const slides = sliderContainer.querySelectorAll('.hero-slide');
-        if (slides.length <= 1) return;
+        const slides=sliderContainer.querySelectorAll('.hero-slide');
+        let current=0;
 
-        let current = 0;
-        let intervalId;
-
-        function goTo(index) {
-            slides.forEach((slide, i) => {
-                slide.classList.toggle('active', i === index);
-            });
-            current = index;
+        function showSlide(index){
+            slides.forEach((slide,i)=>slide.classList.toggle('active',i===index));
+            current=index;
         }
 
-        function next() {
-            const nextIndex = (current + 1) % slides.length;
-            goTo(nextIndex);
-        }
+        document.getElementById('heroPrev').onclick=function(){
+            current=(current-1+slides.length)%slides.length;
+            showSlide(current);
+        };
 
-        function startAutoPlay() {
-            if (intervalId) clearInterval(intervalId);
-            intervalId = setInterval(next, 3000);
-        }
-
-        function stopAutoPlay() {
-            if (intervalId) {
-                clearInterval(intervalId);
-                intervalId = null;
-            }
-        }
-
-        const heroPhoto = document.querySelector('.hero-photo');
-        if (heroPhoto) {
-            heroPhoto.addEventListener('mouseenter', stopAutoPlay);
-            heroPhoto.addEventListener('mouseleave', startAutoPlay);
-        }
-
-        startAutoPlay();
+        document.getElementById('heroNext').onclick=function(){
+            current=(current+1)%slides.length;
+            showSlide(current);
+        };
     })();
 
     // ===== КАРУСЕЛИ (документы и отзывы) — БЕЗ ПУСТОГО ПРОСТРАНСТВА В КОНЦЕ =====
@@ -1470,10 +1487,10 @@
 
         const wrapper = track.closest('.carousel-wrapper');
         wrapper.addEventListener('mouseenter', stopAutoPlay);
-        wrapper.addEventListener('mouseleave', startAutoPlay);
+        wrapper.addEventListener('mouseleave', stopAutoPlay);
 
         // Автопрокрутка запускается после загрузки размеров изображений.
-        setTimeout(startAutoPlay, 100);
+        // Автопрокрутка отключена
     }
 
     // ===== ФОТО ДЛЯ КАРУСЕЛИ ДОКУМЕНТОВ =====
@@ -1486,7 +1503,7 @@
     ];
 
     function imgRenderer(src) {
-        return '<img src="' + src + '" alt="Документ" />';
+        return '<img src="' + src + '" alt="Документ" class="zoom-photo" />';
     }
 
     // ===== ФОТО ДЛЯ КАРУСЕЛИ ОТЗЫВОВ =====
@@ -1498,7 +1515,7 @@
     ];
 
     function reviewImgRenderer(src) {
-        return '<img src="' + src + '" alt="Отзыв" />';
+        return '<img src="' + src + '" alt="Отзыв" class="zoom-photo" />';
     }
 
     // ===== ИНИЦИАЛИЗАЦИЯ =====
@@ -1513,5 +1530,30 @@
     });
 </script>
        
+
+<div class="photo-modal" id="photoModal">
+    <img id="modalImage" src="" alt="">
+</div>
+<script>
+(function(){
+const modal=document.getElementById('photoModal');
+const modalImage=document.getElementById('modalImage');
+document.addEventListener('click',function(e){
+ if(e.target.classList.contains('zoom-photo')){
+   modalImage.src=e.target.src;
+   modal.classList.add('active');
+ }
+});
+modal.addEventListener('click',function(){modal.classList.remove('active');});
+})();
+
+window.onload = function() {
+    setTimeout(() => {
+        window.scrollTo(0, 0);
+    }, 50);
+};
+
+</script>
+
 </body>
 </html>
