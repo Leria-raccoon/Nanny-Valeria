@@ -232,7 +232,7 @@
             z-index: 2;
         }
 
-        /* --- Слайдер в Hero --- */
+        /* --- Слайдер в Hero – контейнер фиксированной ширины и центрирован --- */
         .hero-photo {
             border-radius: var(--radius);
             overflow: hidden;
@@ -241,7 +241,10 @@
             transition: box-shadow var(--transition);
             border: 2px solid var(--color-lavender-light);
             position: relative;
-            height: 560px;      /* фиксированная высота – все фото одного размера */
+            width: 100%;
+            max-width: 500px;            /* фиксированная максимальная ширина */
+            aspect-ratio: 3 / 3.5;         /* единое соотношение сторон для всех слайдов */
+            justify-self: center;        /* центрирование внутри сетки */
         }
         .hero-photo:hover {
             box-shadow: var(--shadow-hover);
@@ -254,15 +257,13 @@
             height: 100%;
         }
 
-        /* ИСПРАВЛЕНИЕ: убрано смещение влево, теперь фото центрируются по умолчанию */
         .hero-slide {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: contain;          /* сохраняет пропорции, не обрезает */
-            /* object-position удалён – центрирование по умолчанию */
+            object-fit: cover;            /* фото заполняют контейнер полностью, обрезая лишнее */
             opacity: 0;
             transition: opacity 0.8s ease-in-out;
             background: var(--color-lavender-light);
@@ -765,15 +766,12 @@
         }
 
         /* ============================================================
-                   АДАПТИВ
+                   АДАПТИВ – убраны все фиксированные высоты для .hero-photo
                    ============================================================ */
         @media (max-width: 992px) {
             .hero-grid {
                 grid-template-columns: 1fr;
                 gap: 40px;
-            }
-            .hero-photo {
-                height: 420px;
             }
             .hero-content h1 {
                 font-size: 3.2rem;
@@ -793,6 +791,7 @@
             .recommendation-box {
                 padding: 1.5rem;
             }
+            /* .hero-photo теперь полностью адаптивен через aspect-ratio и max-width */
         }
 
         @media (max-width: 768px) {
@@ -807,9 +806,6 @@
             }
             .hero-content .description {
                 font-size: 0.95rem;
-            }
-            .hero-photo {
-                height: 320px;
             }
 
             .btn-group {
@@ -919,9 +915,6 @@
             }
             .hero-content .subtitle {
                 font-size: 1.1rem;
-            }
-            .hero-photo {
-                height: 260px;
             }
             .exp-item {
                 padding: 1.2rem;
