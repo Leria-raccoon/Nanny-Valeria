@@ -624,6 +624,13 @@
             transform: translateY(-50%) scale(1.05);
             border-color: var(--color-lavender-dark);
         }
+
+        .carousel-btn:disabled {
+            opacity: 0.35;
+            cursor: default;
+            pointer-events: none;
+        }
+
         .carousel-btn.prev {
             left: 4px;
         }
@@ -1118,7 +1125,7 @@
     <!-- ===== О СЕБЕ – без тегов ===== -->
     <section id="about">
         <div class="container">
-            <h2>Мой характер и <span class="accent">увлечения</span></h2>
+            <h2>О себе </h2>
             <div class="divider"></div>
 
             <div class="about-text">
@@ -1159,7 +1166,7 @@
                         <span class="icon">📞</span>
                         <span class="link-text">
                             <span class="main">8 952 680 69 34</span>
-                            <span class="sub">WhatsApp, Telegram, Viber</span>
+                            <span class="sub">WhatsApp, Telegram, Viber, Макс</span>
                         </span>
                     </a>
 
@@ -1266,7 +1273,7 @@
         startAutoPlay();
     })();
 
-    // ===== КАРУСЕЛИ (документы и отзывы) — ИСПРАВЛЕННАЯ ВЕРСИЯ =====
+    // ===== КАРУСЕЛИ (документы и отзывы) — БЕЗ ПУСТОГО ПРОСТРАНСТВА В КОНЦЕ =====
     const carousels = {};
 
     function initCarousel(id, slidesData, slideRenderer) {
@@ -1274,153 +1281,168 @@
         const dotsContainer = document.getElementById(id + 'Dots');
         if (!track || !dotsContainer) return;
 
-        const slides = [];
         slidesData.forEach((item, index) => {
             const slide = document.createElement('div');
             slide.className = 'carousel-slide';
             slide.innerHTML = slideRenderer(item, index);
-            slides.push(slide);
+            track.appendChild(slide);
         });
 
-        slides.forEach(s => track.appendChild(s));
+        let currentPosition = 0;
+        let positions = [0];
+        let autoInterval = null;
 
-        const total = slides.length;
-        const totalMulti = total;
-
-        function getVisible() {
-            return 1;
-        }
-
-        function updateSlideWidths() {
-            const wrapper = track.closest('.carousel-wrapper');
-            const containerWidth = wrapper.clientWidth - 20;
-            const visible = getVisible();
-
-            const slidesEl = track.querySelectorAll('.carousel-slide');
-            slidesEl.forEach(slide => {
-                const img = slide.querySelector('img');
-                if (img && img.complete && img.naturalWidth > 0) {
-                    const ratio = img.naturalWidth / img.naturalHeight;
-                    const slideHeight = slide.clientHeight || 280;
-                    let width = slideHeight * ratio;
-                    const maxWidth = 400;
-                    if (width > maxWidth) width = maxWidth;
-                    if (width < 80) width = 80;
-                    slide.style.width = width + 'px';
-                } else if (img) {
-                    slide.style.width = '200px';
-                    img.addEventListener('load', () => {
-                        updateSlideWidths();
-                    });
-                }
-            });
-
-            goTo(currentIndex, false);
-            updateDots();
-        }
-
-        let currentIndex = 0;
-
-        function goTo(index, animate = true) {
-            const visible = getVisible();
-            const maxIndex = totalMulti - visible;
-            if (index < 0) index = 0;
-            if (index > maxIndex) index = maxIndex;
-            currentIndex = index;
-
-            const slidesEl = track.querySelectorAll('.carousel-slide');
-            let offset = 0;
-            for (let i = 0; i < index; i++) {
-                const w = slidesEl[i].offsetWidth || parseFloat(slidesEl[i].style.width) || 200;
-                offset += w + 16;
+        function buildPositions() {
+            const slides = Array.from(track.querySelectorAll('.carousel-slide'));
+            if (!slides.length) {
+                positions = [0];
+                return;
             }
-            track.style.transform = 'translateX(-' + offset + 'px)';
+
+            // Максимально допустимый сдвиг: ровно до правого края последней фотографии.
+            // Благодаря этому карусель физически не может уехать дальше в белый фон.
+            const maxOffset = Math.max(0, track.scrollWidth - track.clientWidth);
+
+            const rawPositions = slides.map(slide => Math.min(slide.offsetLeft, maxOffset));
+            rawPositions.push(maxOffset);
+
+            // Убираем повторяющиеся позиции, которые появляются у последних слайдов,
+            // когда несколько из них уже помещаются в видимую область одновременно.
+            positions = rawPositions
+                .sort((a, b) => a - b)
+                .filter((value, index, arr) => index === 0 || Math.abs(value - arr[index - 1]) > 1);
+
+            if (!positions.length) positions = [0];
+            currentPosition = Math.min(currentPosition, positions.length - 1);
+        }
+
+        function updateButtons() {
+            const wrapper = track.closest('.carousel-wrapper');
+            const prevBtn = wrapper.querySelector('.carousel-btn.prev');
+            const nextBtn = wrapper.querySelector('.carousel-btn.next');
+
+            if (prevBtn) prevBtn.disabled = currentPosition === 0;
+            if (nextBtn) nextBtn.disabled = currentPosition === positions.length - 1;
+        }
+
+        function updateDots() {
+            dotsContainer.innerHTML = '';
+
+            positions.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.className = 'dot' + (i === currentPosition ? ' active' : '');
+                dot.addEventListener('click', () => goToPosition(i));
+                dotsContainer.appendChild(dot);
+            });
+        }
+
+        function goToPosition(positionIndex, animate = true) {
+            if (!positions.length) return;
+
+            positionIndex = Math.max(0, Math.min(positionIndex, positions.length - 1));
+            currentPosition = positionIndex;
+
+            if (!animate) track.style.transition = 'none';
+            track.style.transform = 'translateX(-' + positions[currentPosition] + 'px)';
+
             if (!animate) {
-                track.style.transition = 'none';
                 requestAnimationFrame(() => {
                     track.style.transition = '';
                 });
             }
+
             updateDots();
+            updateButtons();
         }
 
-        function updateDots() {
-            const visible = getVisible();
-            const pageCount = Math.ceil(totalMulti / visible);
-            const currentPage = Math.floor(currentIndex / visible);
-            dotsContainer.innerHTML = '';
-            for (let i = 0; i < pageCount; i++) {
-                const dot = document.createElement('button');
-                dot.className = 'dot' + (i === currentPage ? ' active' : '');
-                dot.dataset.index = i;
-                dot.addEventListener('click', () => {
-                    const targetIndex = i * visible;
-                    if (targetIndex <= totalMulti - visible) {
-                        goTo(targetIndex);
+        function updateSlideWidths() {
+            const slides = track.querySelectorAll('.carousel-slide');
+
+            slides.forEach(slide => {
+                const img = slide.querySelector('img');
+                if (!img) return;
+
+                if (img.complete && img.naturalWidth > 0) {
+                    const ratio = img.naturalWidth / img.naturalHeight;
+                    const slideHeight = slide.clientHeight || 280;
+                    let width = slideHeight * ratio;
+
+                    width = Math.min(width, 400);
+                    width = Math.max(width, 80);
+                    slide.style.width = width + 'px';
+                } else {
+                    slide.style.width = '200px';
+                    img.addEventListener('load', updateSlideWidths, { once: true });
+                }
+            });
+
+            // После изменения ширины картинок пересчитываем реальные допустимые позиции.
+            requestAnimationFrame(() => {
+                const oldOffset = positions[currentPosition] || 0;
+                buildPositions();
+
+                // Выбираем ближайшую к текущему месту позицию после resize/load.
+                let nearest = 0;
+                let nearestDistance = Infinity;
+                positions.forEach((pos, i) => {
+                    const distance = Math.abs(pos - oldOffset);
+                    if (distance < nearestDistance) {
+                        nearestDistance = distance;
+                        nearest = i;
                     }
                 });
-                dotsContainer.appendChild(dot);
+
+                currentPosition = nearest;
+                goToPosition(currentPosition, false);
+            });
+        }
+
+        function stopAutoPlay() {
+            if (autoInterval) {
+                clearInterval(autoInterval);
+                autoInterval = null;
             }
         }
+
+        function startAutoPlay() {
+            stopAutoPlay();
+            if (positions.length <= 1 || currentPosition >= positions.length - 1) return;
+
+            autoInterval = setInterval(() => {
+                if (currentPosition < positions.length - 1) {
+                    goToPosition(currentPosition + 1);
+                } else {
+                    stopAutoPlay();
+                }
+            }, 5000);
+        }
+
+        carousels[id] = {
+            move(dir) {
+                const target = currentPosition + dir;
+
+                // Жёсткая остановка на первом/последнем допустимом положении.
+                if (target < 0 || target >= positions.length) return;
+
+                goToPosition(target);
+            },
+            update: updateSlideWidths
+        };
 
         updateSlideWidths();
 
         let resizeTimeout;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                updateSlideWidths();
-            }, 200);
+            resizeTimeout = setTimeout(updateSlideWidths, 150);
         });
-
-        let autoInterval = setInterval(() => {
-            const visible = getVisible();
-            const maxIndex = totalMulti - visible;
-            if (currentIndex < maxIndex) {
-                goTo(currentIndex + 1);
-            } else {
-                clearInterval(autoInterval);
-            }
-        }, 5000);
 
         const wrapper = track.closest('.carousel-wrapper');
-        wrapper.addEventListener('mouseenter', () => clearInterval(autoInterval));
-        wrapper.addEventListener('mouseleave', () => {
-            autoInterval = setInterval(() => {
-                const visible = getVisible();
-                const maxIndex = totalMulti - visible;
-                if (currentIndex < maxIndex) {
-                    goTo(currentIndex + 1);
-                } else {
-                    clearInterval(autoInterval);
-                }
-            }, 5000);
-        });
+        wrapper.addEventListener('mouseenter', stopAutoPlay);
+        wrapper.addEventListener('mouseleave', startAutoPlay);
 
-        carousels[id] = {
-            goTo: goTo,
-            current: () => currentIndex,
-            total: totalMulti,
-            update: updateSlideWidths,
-            getVisible: getVisible,
-            move: function(dir) {
-                const visible = this.getVisible();
-                const maxIndex = totalMulti - visible;
-                let current = this.current();
-                // Запрещаем движение за пределы
-                if (dir > 0 && current >= maxIndex) return;
-                if (dir < 0 && current <= 0) return;
-                let newIndex = current + dir;
-                if (newIndex < 0) newIndex = 0;
-                if (newIndex > maxIndex) newIndex = maxIndex;
-                this.goTo(newIndex);
-            }
-        };
-
-        window['moveCarousel_' + id] = function(dir) {
-            const c = carousels[id];
-            if (c) c.move(dir);
-        };
+        // Автопрокрутка запускается после загрузки размеров изображений.
+        setTimeout(startAutoPlay, 100);
     }
 
     // ===== ФОТО ДЛЯ КАРУСЕЛИ ДОКУМЕНТОВ =====
@@ -1441,7 +1463,7 @@
         'Снимок экрана 2026-08-28 175657.png',
         'Снимок экрана 2026-08-28 161239.png',
         'Снимок экрана 2026-08-28 173326.png',
-        'Снимок экрана 2026-08-28 182939.png'
+        'Снимок экрана 2026-08-28 202949.png'
     ];
 
     function reviewImgRenderer(src) {
