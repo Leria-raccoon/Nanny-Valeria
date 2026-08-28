@@ -232,6 +232,7 @@
             z-index: 2;
         }
 
+        /* --- Слайдер в Hero --- */
         .hero-photo {
             border-radius: var(--radius);
             overflow: hidden;
@@ -239,22 +240,38 @@
             background: var(--color-lavender-light);
             transition: box-shadow var(--transition);
             border: 2px solid var(--color-lavender-light);
+            position: relative;
+            height: 560px;      /* фиксированная высота – все фото одного размера */
         }
         .hero-photo:hover {
             box-shadow: var(--shadow-hover);
             border-color: var(--color-lavender);
         }
-        .hero-photo img {
+
+        .hero-slider {
+            position: relative;
             width: 100%;
-            height: 560px;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.5s ease;
-        }
-        .hero-photo:hover img {
-            transform: scale(1.02);
+            height: 100%;
         }
 
+        /* ИСПРАВЛЕНИЕ: убрано смещение влево, теперь фото центрируются по умолчанию */
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;          /* сохраняет пропорции, не обрезает */
+            /* object-position удалён – центрирование по умолчанию */
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            background: var(--color-lavender-light);
+        }
+        .hero-slide.active {
+            opacity: 1;
+        }
+
+        /* --- Остальные стили Hero --- */
         .hero-content .tag {
             display: inline-block;
             background: var(--color-lavender-light);
@@ -556,7 +573,7 @@
             gap: 16px;
             padding: 10px 0;
             align-items: stretch;
-            background: var(--color-white); /* чтобы не было белого пятна */
+            background: var(--color-white);
         }
 
         .carousel-slide {
@@ -567,7 +584,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 280px; /* фиксированная высота для всех */
+            height: 280px;
             background: #f5f2ef;
         }
 
@@ -755,7 +772,7 @@
                 grid-template-columns: 1fr;
                 gap: 40px;
             }
-            .hero-photo img {
+            .hero-photo {
                 height: 420px;
             }
             .hero-content h1 {
@@ -791,7 +808,7 @@
             .hero-content .description {
                 font-size: 0.95rem;
             }
-            .hero-photo img {
+            .hero-photo {
                 height: 320px;
             }
 
@@ -903,7 +920,7 @@
             .hero-content .subtitle {
                 font-size: 1.1rem;
             }
-            .hero-photo img {
+            .hero-photo {
                 height: 260px;
             }
             .exp-item {
@@ -978,7 +995,8 @@
     <section id="hero">
         <div class="container hero-grid">
             <div class="hero-photo">
-                <img src="Без названия.png" alt="Валерия" />
+                <!-- Слайдер – фото добавляются через JavaScript -->
+                <div class="hero-slider" id="heroSlider"></div>
             </div>
             <div class="hero-content">
                 <span class="tag">Няня для детей от 1 до 3 лет</span>
@@ -1144,7 +1162,6 @@
                 <p>Готова ответить на все вопросы, обсудить условия и приехать на знакомство. Напишите или позвоните — отвечаю быстро 🌸</p>
 
                 <div class="contact-links">
-                    <!-- Телефон с подсказкой о мессенджерах внутри -->
                     <a href="tel:+79526806934" class="contact-link">
                         <span class="icon">📞</span>
                         <span class="link-text">
@@ -1186,7 +1203,7 @@
     </footer>
 
     <!-- ============================================================
-    JAVASCRIPT – КАРУСЕЛИ (обе с фикс. высотой, без бесконечности)
+    JAVASCRIPT – КАРУСЕЛИ И СЛАЙДЕР HERO
     ============================================================ -->
     <script>
         // ===== БУРГЕР =====
@@ -1197,7 +1214,68 @@
             a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
         });
 
-        // ===== КАРУСЕЛИ =====
+        // ===== СЛАЙДЕР HERO =====
+        (function() {
+            // ⬇️⬇️⬇️ ЗАМЕНИТЕ ЭТИ ИМЕНА НА СВОИ ФАЙЛЫ (4 штуки) ⬇️⬇️⬇️
+            const heroImages = [
+                '20260822_183527.jpg',
+                'IMG_20250924_162222.webp',
+                'IMG_20260827_171648_440.webp',
+                'IMG_20250910_185515.webp'
+            ];
+            // Если фото лежат в подпапке, укажите 'images/photo1.jpg' и т.д.
+
+            const sliderContainer = document.getElementById('heroSlider');
+            if (!sliderContainer) return;
+
+            heroImages.forEach((src, index) => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = 'Фото ' + (index + 1);
+                img.className = 'hero-slide' + (index === 0 ? ' active' : '');
+                sliderContainer.appendChild(img);
+            });
+
+            const slides = sliderContainer.querySelectorAll('.hero-slide');
+            if (slides.length <= 1) return;
+
+            let current = 0;
+            let intervalId;
+
+            function goTo(index) {
+                slides.forEach((slide, i) => {
+                    slide.classList.toggle('active', i === index);
+                });
+                current = index;
+            }
+
+            function next() {
+                const nextIndex = (current + 1) % slides.length;
+                goTo(nextIndex);
+            }
+
+            function startAutoPlay() {
+                if (intervalId) clearInterval(intervalId);
+                intervalId = setInterval(next, 3000); // 3 секунды (можно менять)
+            }
+
+            function stopAutoPlay() {
+                if (intervalId) {
+                    clearInterval(intervalId);
+                    intervalId = null;
+                }
+            }
+
+            const heroPhoto = document.querySelector('.hero-photo');
+            if (heroPhoto) {
+                heroPhoto.addEventListener('mouseenter', stopAutoPlay);
+                heroPhoto.addEventListener('mouseleave', startAutoPlay);
+            }
+
+            startAutoPlay();
+        })();
+
+        // ===== КАРУСЕЛИ (документы и отзывы) =====
         const carousels = {};
 
         function initCarousel(id, slidesData, slideRenderer) {
@@ -1205,7 +1283,6 @@
             const dotsContainer = document.getElementById(id + 'Dots');
             if (!track || !dotsContainer) return;
 
-            // Создаём только оригинальные слайды (без копий)
             const slides = [];
             slidesData.forEach((item, index) => {
                 const slide = document.createElement('div');
@@ -1217,10 +1294,10 @@
             slides.forEach(s => track.appendChild(s));
 
             const total = slides.length;
-            const totalMulti = total; // без копий
+            const totalMulti = total;
 
             function getVisible() {
-                return 1; // всегда показываем по одному слайду
+                return 1;
             }
 
             function updateSlideWidths() {
@@ -1235,7 +1312,6 @@
                         const ratio = img.naturalWidth / img.naturalHeight;
                         const slideHeight = slide.clientHeight || 280;
                         let width = slideHeight * ratio;
-                        // Ограничим максимальную ширину, чтобы не выходила за контейнер
                         const maxWidth = 400;
                         if (width > maxWidth) width = maxWidth;
                         if (width < 80) width = 80;
@@ -1257,7 +1333,6 @@
             function goTo(index, animate = true) {
                 const visible = getVisible();
                 const maxIndex = totalMulti - visible;
-                // Ограничиваем индекс, чтобы не выходить за пределы
                 if (index < 0) index = 0;
                 if (index > maxIndex) index = maxIndex;
                 currentIndex = index;
@@ -1289,7 +1364,6 @@
                     dot.dataset.index = i;
                     dot.addEventListener('click', () => {
                         const targetIndex = i * visible;
-                        // Проверяем, чтобы не выйти за пределы
                         if (targetIndex <= totalMulti - visible) {
                             goTo(targetIndex);
                         }
@@ -1308,14 +1382,12 @@
                 }, 200);
             });
 
-            // Автопрокрутка с остановкой на последнем слайде
             let autoInterval = setInterval(() => {
                 const visible = getVisible();
                 const maxIndex = totalMulti - visible;
                 if (currentIndex < maxIndex) {
                     goTo(currentIndex + 1);
                 } else {
-                    // на последнем – останавливаемся (бесконечности нет)
                     clearInterval(autoInterval);
                 }
             }, 5000);
@@ -1323,7 +1395,6 @@
             const wrapper = track.closest('.carousel-wrapper');
             wrapper.addEventListener('mouseenter', () => clearInterval(autoInterval));
             wrapper.addEventListener('mouseleave', () => {
-                // Возобновляем только если не на последнем
                 autoInterval = setInterval(() => {
                     const visible = getVisible();
                     const maxIndex = totalMulti - visible;
@@ -1370,7 +1441,7 @@
             return '<img src="' + src + '" alt="Документ" />';
         }
 
-        // ===== ФОТО ДЛЯ КАРУСЕЛИ ОТЗЫВОВ (замените на свои) =====
+        // ===== ФОТО ДЛЯ КАРУСЕЛИ ОТЗЫВОВ =====
         const reviewPhotos = [
             'Снимок экрана 2026-08-28 175657.png',
             'Снимок экрана 2026-08-28 161239.png',
@@ -1393,6 +1464,5 @@
             };
         });
     </script>
-
 </body>
 </html>
