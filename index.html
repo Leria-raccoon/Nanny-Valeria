@@ -1199,183 +1199,194 @@
     JAVASCRIPT – КАРУСЕЛИ И СЛАЙДЕР HERO
     ============================================================ -->
     <script>
-        // ===== БУРГЕР =====
-        document.getElementById('burger').addEventListener('click', function() {
-            document.getElementById('navLinks').classList.toggle('open');
+    // ===== БУРГЕР =====
+    document.getElementById('burger').addEventListener('click', function() {
+        document.getElementById('navLinks').classList.toggle('open');
+    });
+    document.querySelectorAll('.nav-links a').forEach(a => {
+        a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
+    });
+
+    // ===== СЛАЙДЕР HERO =====
+    (function() {
+        const heroImages = [
+            '20260822_183527.jpg',
+            'IMG_20250924_162222.webp',
+            'IMG_20260827_171648_440.webp',
+            'IMG_20250910_185515.webp'
+        ];
+
+        const sliderContainer = document.getElementById('heroSlider');
+        if (!sliderContainer) return;
+
+        heroImages.forEach((src, index) => {
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = 'Фото ' + (index + 1);
+            img.className = 'hero-slide' + (index === 0 ? ' active' : '');
+            sliderContainer.appendChild(img);
         });
-        document.querySelectorAll('.nav-links a').forEach(a => {
-            a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
-        });
 
-        // ===== СЛАЙДЕР HERO =====
-        (function() {
-            // ⬇️⬇️⬇️ ЗАМЕНИТЕ ЭТИ ИМЕНА НА СВОИ ФАЙЛЫ (4 штуки) ⬇️⬇️⬇️
-            const heroImages = [
-                '20260822_183527.jpg',
-                'IMG_20250924_162222.webp',
-                'IMG_20260827_171648_440.webp',
-                'IMG_20250910_185515.webp'
-            ];
-            // Если фото лежат в подпапке, укажите 'images/photo1.jpg' и т.д.
+        const slides = sliderContainer.querySelectorAll('.hero-slide');
+        if (slides.length <= 1) return;
 
-            const sliderContainer = document.getElementById('heroSlider');
-            if (!sliderContainer) return;
+        let current = 0;
+        let intervalId;
 
-            heroImages.forEach((src, index) => {
-                const img = document.createElement('img');
-                img.src = src;
-                img.alt = 'Фото ' + (index + 1);
-                img.className = 'hero-slide' + (index === 0 ? ' active' : '');
-                sliderContainer.appendChild(img);
+        function goTo(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
             });
+            current = index;
+        }
 
-            const slides = sliderContainer.querySelectorAll('.hero-slide');
-            if (slides.length <= 1) return;
+        function next() {
+            const nextIndex = (current + 1) % slides.length;
+            goTo(nextIndex);
+        }
 
-            let current = 0;
-            let intervalId;
+        function startAutoPlay() {
+            if (intervalId) clearInterval(intervalId);
+            intervalId = setInterval(next, 3000);
+        }
 
-            function goTo(index) {
-                slides.forEach((slide, i) => {
-                    slide.classList.toggle('active', i === index);
-                });
-                current = index;
+        function stopAutoPlay() {
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = null;
             }
+        }
 
-            function next() {
-                const nextIndex = (current + 1) % slides.length;
-                goTo(nextIndex);
-            }
+        const heroPhoto = document.querySelector('.hero-photo');
+        if (heroPhoto) {
+            heroPhoto.addEventListener('mouseenter', stopAutoPlay);
+            heroPhoto.addEventListener('mouseleave', startAutoPlay);
+        }
 
-            function startAutoPlay() {
-                if (intervalId) clearInterval(intervalId);
-                intervalId = setInterval(next, 3000); // 3 секунды (можно менять)
-            }
+        startAutoPlay();
+    })();
 
-            function stopAutoPlay() {
-                if (intervalId) {
-                    clearInterval(intervalId);
-                    intervalId = null;
+    // ===== КАРУСЕЛИ (документы и отзывы) — ИСПРАВЛЕННАЯ ВЕРСИЯ =====
+    const carousels = {};
+
+    function initCarousel(id, slidesData, slideRenderer) {
+        const track = document.getElementById(id + 'Track');
+        const dotsContainer = document.getElementById(id + 'Dots');
+        if (!track || !dotsContainer) return;
+
+        const slides = [];
+        slidesData.forEach((item, index) => {
+            const slide = document.createElement('div');
+            slide.className = 'carousel-slide';
+            slide.innerHTML = slideRenderer(item, index);
+            slides.push(slide);
+        });
+
+        slides.forEach(s => track.appendChild(s));
+
+        const total = slides.length;
+        const totalMulti = total;
+
+        function getVisible() {
+            return 1;
+        }
+
+        function updateSlideWidths() {
+            const wrapper = track.closest('.carousel-wrapper');
+            const containerWidth = wrapper.clientWidth - 20;
+            const visible = getVisible();
+
+            const slidesEl = track.querySelectorAll('.carousel-slide');
+            slidesEl.forEach(slide => {
+                const img = slide.querySelector('img');
+                if (img && img.complete && img.naturalWidth > 0) {
+                    const ratio = img.naturalWidth / img.naturalHeight;
+                    const slideHeight = slide.clientHeight || 280;
+                    let width = slideHeight * ratio;
+                    const maxWidth = 400;
+                    if (width > maxWidth) width = maxWidth;
+                    if (width < 80) width = 80;
+                    slide.style.width = width + 'px';
+                } else if (img) {
+                    slide.style.width = '200px';
+                    img.addEventListener('load', () => {
+                        updateSlideWidths();
+                    });
                 }
-            }
-
-            const heroPhoto = document.querySelector('.hero-photo');
-            if (heroPhoto) {
-                heroPhoto.addEventListener('mouseenter', stopAutoPlay);
-                heroPhoto.addEventListener('mouseleave', startAutoPlay);
-            }
-
-            startAutoPlay();
-        })();
-
-        // ===== КАРУСЕЛИ (документы и отзывы) =====
-        const carousels = {};
-
-        function initCarousel(id, slidesData, slideRenderer) {
-            const track = document.getElementById(id + 'Track');
-            const dotsContainer = document.getElementById(id + 'Dots');
-            if (!track || !dotsContainer) return;
-
-            const slides = [];
-            slidesData.forEach((item, index) => {
-                const slide = document.createElement('div');
-                slide.className = 'carousel-slide';
-                slide.innerHTML = slideRenderer(item, index);
-                slides.push(slide);
             });
 
-            slides.forEach(s => track.appendChild(s));
+            goTo(currentIndex, false);
+            updateDots();
+        }
 
-            const total = slides.length;
-            const totalMulti = total;
+        let currentIndex = 0;
 
-            function getVisible() {
-                return 1;
+        function goTo(index, animate = true) {
+            const visible = getVisible();
+            const maxIndex = totalMulti - visible;
+            if (index < 0) index = 0;
+            if (index > maxIndex) index = maxIndex;
+            currentIndex = index;
+
+            const slidesEl = track.querySelectorAll('.carousel-slide');
+            let offset = 0;
+            for (let i = 0; i < index; i++) {
+                const w = slidesEl[i].offsetWidth || parseFloat(slidesEl[i].style.width) || 200;
+                offset += w + 16;
             }
+            track.style.transform = 'translateX(-' + offset + 'px)';
+            if (!animate) {
+                track.style.transition = 'none';
+                requestAnimationFrame(() => {
+                    track.style.transition = '';
+                });
+            }
+            updateDots();
+        }
 
-            function updateSlideWidths() {
-                const wrapper = track.closest('.carousel-wrapper');
-                const containerWidth = wrapper.clientWidth - 20;
-                const visible = getVisible();
-
-                const slidesEl = track.querySelectorAll('.carousel-slide');
-                slidesEl.forEach(slide => {
-                    const img = slide.querySelector('img');
-                    if (img && img.complete && img.naturalWidth > 0) {
-                        const ratio = img.naturalWidth / img.naturalHeight;
-                        const slideHeight = slide.clientHeight || 280;
-                        let width = slideHeight * ratio;
-                        const maxWidth = 400;
-                        if (width > maxWidth) width = maxWidth;
-                        if (width < 80) width = 80;
-                        slide.style.width = width + 'px';
-                    } else if (img) {
-                        slide.style.width = '200px';
-                        img.addEventListener('load', () => {
-                            updateSlideWidths();
-                        });
+        function updateDots() {
+            const visible = getVisible();
+            const pageCount = Math.ceil(totalMulti / visible);
+            const currentPage = Math.floor(currentIndex / visible);
+            dotsContainer.innerHTML = '';
+            for (let i = 0; i < pageCount; i++) {
+                const dot = document.createElement('button');
+                dot.className = 'dot' + (i === currentPage ? ' active' : '');
+                dot.dataset.index = i;
+                dot.addEventListener('click', () => {
+                    const targetIndex = i * visible;
+                    if (targetIndex <= totalMulti - visible) {
+                        goTo(targetIndex);
                     }
                 });
-
-                goTo(currentIndex, false);
-                updateDots();
+                dotsContainer.appendChild(dot);
             }
+        }
 
-            let currentIndex = 0;
+        updateSlideWidths();
 
-            function goTo(index, animate = true) {
-                const visible = getVisible();
-                const maxIndex = totalMulti - visible;
-                if (index < 0) index = 0;
-                if (index > maxIndex) index = maxIndex;
-                currentIndex = index;
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                updateSlideWidths();
+            }, 200);
+        });
 
-                const slidesEl = track.querySelectorAll('.carousel-slide');
-                let offset = 0;
-                for (let i = 0; i < index; i++) {
-                    const w = slidesEl[i].offsetWidth || parseFloat(slidesEl[i].style.width) || 200;
-                    offset += w + 16;
-                }
-                track.style.transform = 'translateX(-' + offset + 'px)';
-                if (!animate) {
-                    track.style.transition = 'none';
-                    requestAnimationFrame(() => {
-                        track.style.transition = '';
-                    });
-                }
-                updateDots();
+        let autoInterval = setInterval(() => {
+            const visible = getVisible();
+            const maxIndex = totalMulti - visible;
+            if (currentIndex < maxIndex) {
+                goTo(currentIndex + 1);
+            } else {
+                clearInterval(autoInterval);
             }
+        }, 5000);
 
-            function updateDots() {
-                const visible = getVisible();
-                const pageCount = Math.ceil(totalMulti / visible);
-                const currentPage = Math.floor(currentIndex / visible);
-                dotsContainer.innerHTML = '';
-                for (let i = 0; i < pageCount; i++) {
-                    const dot = document.createElement('button');
-                    dot.className = 'dot' + (i === currentPage ? ' active' : '');
-                    dot.dataset.index = i;
-                    dot.addEventListener('click', () => {
-                        const targetIndex = i * visible;
-                        if (targetIndex <= totalMulti - visible) {
-                            goTo(targetIndex);
-                        }
-                    });
-                    dotsContainer.appendChild(dot);
-                }
-            }
-
-            updateSlideWidths();
-
-            let resizeTimeout;
-            window.addEventListener('resize', () => {
-                clearTimeout(resizeTimeout);
-                resizeTimeout = setTimeout(() => {
-                    updateSlideWidths();
-                }, 200);
-            });
-
-            let autoInterval = setInterval(() => {
+        const wrapper = track.closest('.carousel-wrapper');
+        wrapper.addEventListener('mouseenter', () => clearInterval(autoInterval));
+        wrapper.addEventListener('mouseleave', () => {
+            autoInterval = setInterval(() => {
                 const visible = getVisible();
                 const maxIndex = totalMulti - visible;
                 if (currentIndex < maxIndex) {
@@ -1384,78 +1395,70 @@
                     clearInterval(autoInterval);
                 }
             }, 5000);
-
-            const wrapper = track.closest('.carousel-wrapper');
-            wrapper.addEventListener('mouseenter', () => clearInterval(autoInterval));
-            wrapper.addEventListener('mouseleave', () => {
-                autoInterval = setInterval(() => {
-                    const visible = getVisible();
-                    const maxIndex = totalMulti - visible;
-                    if (currentIndex < maxIndex) {
-                        goTo(currentIndex + 1);
-                    } else {
-                        clearInterval(autoInterval);
-                    }
-                }, 5000);
-            });
-
-            carousels[id] = {
-                goTo: goTo,
-                current: () => currentIndex,
-                total: totalMulti,
-                update: updateSlideWidths,
-                getVisible: getVisible,
-                move: function(dir) {
-                    const visible = this.getVisible();
-                    const maxIndex = totalMulti - visible;
-                    let newIndex = this.current() + dir;
-                    if (newIndex < 0) newIndex = 0;
-                    if (newIndex > maxIndex) newIndex = maxIndex;
-                    this.goTo(newIndex);
-                }
-            };
-
-            window['moveCarousel_' + id] = function(dir) {
-                const c = carousels[id];
-                if (c) c.move(dir);
-            };
-        }
-
-        // ===== ФОТО ДЛЯ КАРУСЕЛИ ДОКУМЕНТОВ =====
-        const docPhotos = [
-            'IMG_20260828_155504.webp',
-            'IMG_7904.HEIC.webp',
-            'photo_2026-08-10_16-06-24.jpg',
-            'photo_2026-08-10_16-09-04.jpg',
-            'photo_2026-08-10_16-10-43.jpg'
-        ];
-
-        function imgRenderer(src) {
-            return '<img src="' + src + '" alt="Документ" />';
-        }
-
-        // ===== ФОТО ДЛЯ КАРУСЕЛИ ОТЗЫВОВ =====
-        const reviewPhotos = [
-            'Снимок экрана 2026-08-28 175657.png',
-            'Снимок экрана 2026-08-28 161239.png',
-            'Снимок экрана 2026-08-28 173326.png',
-            'Снимок экрана 2026-08-28 182939.png'
-        ];
-
-        function reviewImgRenderer(src) {
-            return '<img src="' + src + '" alt="Отзыв" />';
-        }
-
-        // ===== ИНИЦИАЛИЗАЦИЯ =====
-        document.addEventListener('DOMContentLoaded', function() {
-            initCarousel('doc', docPhotos, imgRenderer);
-            initCarousel('review', reviewPhotos, reviewImgRenderer);
-
-            window.moveCarousel = function(type, dir) {
-                const c = carousels[type];
-                if (c) c.move(dir);
-            };
         });
-    </script>
+
+        carousels[id] = {
+            goTo: goTo,
+            current: () => currentIndex,
+            total: totalMulti,
+            update: updateSlideWidths,
+            getVisible: getVisible,
+            move: function(dir) {
+                const visible = this.getVisible();
+                const maxIndex = totalMulti - visible;
+                let current = this.current();
+                // Запрещаем движение за пределы
+                if (dir > 0 && current >= maxIndex) return;
+                if (dir < 0 && current <= 0) return;
+                let newIndex = current + dir;
+                if (newIndex < 0) newIndex = 0;
+                if (newIndex > maxIndex) newIndex = maxIndex;
+                this.goTo(newIndex);
+            }
+        };
+
+        window['moveCarousel_' + id] = function(dir) {
+            const c = carousels[id];
+            if (c) c.move(dir);
+        };
+    }
+
+    // ===== ФОТО ДЛЯ КАРУСЕЛИ ДОКУМЕНТОВ =====
+    const docPhotos = [
+        'IMG_20260828_155504.webp',
+        'IMG_7904.HEIC.webp',
+        'photo_2026-08-10_16-06-24.jpg',
+        'photo_2026-08-10_16-09-04.jpg',
+        'photo_2026-08-10_16-10-43.jpg'
+    ];
+
+    function imgRenderer(src) {
+        return '<img src="' + src + '" alt="Документ" />';
+    }
+
+    // ===== ФОТО ДЛЯ КАРУСЕЛИ ОТЗЫВОВ =====
+    const reviewPhotos = [
+        'Снимок экрана 2026-08-28 175657.png',
+        'Снимок экрана 2026-08-28 161239.png',
+        'Снимок экрана 2026-08-28 173326.png',
+        'Снимок экрана 2026-08-28 182939.png'
+    ];
+
+    function reviewImgRenderer(src) {
+        return '<img src="' + src + '" alt="Отзыв" />';
+    }
+
+    // ===== ИНИЦИАЛИЗАЦИЯ =====
+    document.addEventListener('DOMContentLoaded', function() {
+        initCarousel('doc', docPhotos, imgRenderer);
+        initCarousel('review', reviewPhotos, reviewImgRenderer);
+
+        window.moveCarousel = function(type, dir) {
+            const c = carousels[type];
+            if (c) c.move(dir);
+        };
+    });
+</script>
+       
 </body>
 </html>
