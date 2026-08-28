@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Валерия — профессиональная няня</title>
+    <title>Няня — профессиональная няня</title>
     <style>
         /* ============================================================
                    ГЛОБАЛЬНЫЕ СТИЛИ – ЭЛЕГАНТНЫЙ И УЮТНЫЙ
@@ -423,6 +423,38 @@
         }
 
         /* ============================================================
+                   РЕКОМЕНДАЦИИ (добавленный блок)
+                   ============================================================ */
+        #recommendations {
+            background: var(--color-white);
+            padding: 40px 0;
+            text-align: center;
+        }
+        .recommendation-box {
+            background: var(--color-bg-section);
+            border-radius: var(--radius);
+            padding: 2rem 2.5rem;
+            border: 2px solid var(--color-coral);
+            box-shadow: var(--shadow);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .recommendation-box h3 {
+            font-size: 1.6rem;
+            color: var(--color-text);
+            margin-bottom: 0.5rem;
+        }
+        .recommendation-box p {
+            font-size: 1.1rem;
+            color: var(--color-text-light);
+            margin-bottom: 0;
+        }
+        .recommendation-box .highlight {
+            color: var(--color-coral);
+            font-weight: 700;
+        }
+
+        /* ============================================================
                    ПРЕИМУЩЕСТВА
                    ============================================================ */
         #why {
@@ -471,7 +503,7 @@
         }
 
         /* ============================================================
-                   КАРУСЕЛЬ (документы и отзывы)
+                   КАРУСЕЛЬ – БЕСКОНЕЧНАЯ, РАЗНАЯ ШИРИНА ДЛЯ ФОТО
                    ============================================================ */
         .carousel-wrapper {
             position: relative;
@@ -481,6 +513,7 @@
             box-shadow: var(--shadow);
             border: 1px solid var(--color-border);
             transition: box-shadow var(--transition);
+            padding: 0 10px;
         }
         .carousel-wrapper:hover {
             box-shadow: var(--shadow-hover);
@@ -490,24 +523,66 @@
         .carousel-track {
             display: flex;
             transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            gap: 16px;
+            padding: 10px 0;
+            align-items: stretch;
         }
 
         .carousel-slide {
-            min-width: 100%;
+            flex: 0 0 auto;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
             display: flex;
             align-items: center;
             justify-content: center;
-            background: var(--color-bg);
-            height: 380px;
-            overflow: hidden; /* чтобы скрыть обрезанные части при cover */
+            height: 280px;
+            background: #f5f2ef;
+            /* ширина будет задана через JS */
         }
 
-        /* Теперь картинки заполняют весь слайд без пустот */
         .carousel-slide img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* заполняет контейнер, обрезая лишнее */
+            object-fit: contain;
             display: block;
+            background: #f5f2ef;
+        }
+
+        /* Слайды для отзывов – текстовые блоки */
+        .review-slide {
+            flex-direction: column;
+            padding: 1.5rem;
+            height: 280px;
+            background: var(--color-bg-section);
+            justify-content: center;
+            text-align: center;
+            overflow-y: auto;
+            /* ширина задаётся через JS */
+        }
+        .review-slide .stars {
+            color: #F5A623;
+            font-size: 1.4rem;
+            letter-spacing: 3px;
+            margin-bottom: 0.4rem;
+        }
+        .review-slide .review-text {
+            font-size: 1rem;
+            color: var(--color-text);
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 0.4rem;
+            max-width: 100%;
+        }
+        .review-slide .review-author {
+            font-weight: 600;
+            color: var(--color-lavender-dark);
+            font-size: 0.85rem;
+            background: var(--color-lavender-light);
+            padding: 0.2rem 1.2rem;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--color-lavender);
+            display: inline-block;
         }
 
         .carousel-btn {
@@ -517,9 +592,9 @@
             background: rgba(255, 255, 255, 0.92);
             border: 1px solid var(--color-lavender);
             border-radius: 50%;
-            width: 46px;
-            height: 46px;
-            font-size: 1.6rem;
+            width: 40px;
+            height: 40px;
+            font-size: 1.4rem;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -527,32 +602,32 @@
             transition: all var(--transition);
             z-index: 5;
             color: var(--color-lavender-dark);
-            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
             backdrop-filter: blur(4px);
         }
         .carousel-btn:hover {
             background: var(--color-lavender-light);
-            box-shadow: 0 4px 24px rgba(168, 181, 214, 0.2);
+            box-shadow: 0 4px 20px rgba(168, 181, 214, 0.2);
             color: var(--color-lavender-dark);
             transform: translateY(-50%) scale(1.05);
             border-color: var(--color-lavender-dark);
         }
         .carousel-btn.prev {
-            left: 12px;
+            left: 4px;
         }
         .carousel-btn.next {
-            right: 12px;
+            right: 4px;
         }
 
         .carousel-dots {
             display: flex;
             justify-content: center;
             gap: 10px;
-            padding: 18px 0 14px;
+            padding: 16px 0 8px;
         }
         .carousel-dots .dot {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background: var(--color-border);
             border: none;
@@ -612,48 +687,6 @@
             color: #fff;
             border-color: var(--color-lavender-dark);
             transform: translateY(-2px);
-        }
-
-        /* ============================================================
-                   ОТЗЫВЫ
-                   ============================================================ */
-        #reviews {
-            background: var(--color-white);
-        }
-
-        .review-slide {
-            padding: 3rem 3.5rem;
-            text-align: center;
-            background: var(--color-bg-section);
-            min-height: 240px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-        }
-        .review-slide .stars {
-            color: #F5A623;
-            font-size: 1.6rem;
-            letter-spacing: 4px;
-            margin-bottom: 0.6rem;
-        }
-        .review-slide .review-text {
-            font-size: 1.1rem;
-            color: var(--color-text);
-            font-style: italic;
-            margin-bottom: 0.8rem;
-            line-height: 1.8;
-            max-width: 700px;
-        }
-        .review-slide .review-author {
-            font-weight: 600;
-            color: var(--color-lavender-dark);
-            font-size: 0.95rem;
-            background: var(--color-lavender-light);
-            padding: 0.2rem 1.8rem;
-            border-radius: var(--radius-full);
-            border: 1px solid var(--color-lavender);
         }
 
         /* ============================================================
@@ -750,6 +783,16 @@
                 gap: 0.4rem;
                 padding: 1.5rem;
             }
+            .carousel-slide {
+                height: 220px;
+            }
+            .review-slide {
+                height: 220px;
+                padding: 1rem;
+            }
+            .recommendation-box {
+                padding: 1.5rem;
+            }
         }
 
         @media (max-width: 768px) {
@@ -788,21 +831,6 @@
             }
             .hero-photo img {
                 height: 320px;
-            }
-
-            .review-slide {
-                padding: 1.8rem 1.5rem;
-                min-height: 200px;
-            }
-            .review-slide .review-text {
-                font-size: 0.95rem;
-            }
-            .review-slide .review-author {
-                font-size: 0.85rem;
-            }
-
-            .carousel-slide {
-                height: 220px;
             }
 
             .btn-group {
@@ -869,15 +897,15 @@
             }
 
             .carousel-btn {
-                width: 38px;
-                height: 38px;
+                width: 34px;
+                height: 34px;
                 font-size: 1.2rem;
             }
             .carousel-btn.prev {
-                left: 8px;
+                left: 2px;
             }
             .carousel-btn.next {
-                right: 8px;
+                right: 2px;
             }
 
             #about .about-text p {
@@ -887,6 +915,28 @@
             .about-tag {
                 font-size: 0.7rem;
                 padding: 0.2rem 1rem;
+            }
+            .carousel-slide {
+                height: 180px;
+            }
+            .review-slide {
+                height: 180px;
+                padding: 0.8rem;
+            }
+            .review-slide .review-text {
+                font-size: 0.9rem;
+            }
+            .review-slide .stars {
+                font-size: 1.2rem;
+            }
+            .recommendation-box {
+                padding: 1.2rem;
+            }
+            .recommendation-box h3 {
+                font-size: 1.3rem;
+            }
+            .recommendation-box p {
+                font-size: 1rem;
             }
         }
 
@@ -918,25 +968,28 @@
                 font-size: 0.9rem;
             }
             .carousel-slide {
-                height: 180px;
-            }
-            .review-slide .review-text {
-                font-size: 0.9rem;
+                height: 150px;
             }
             .review-slide {
-                padding: 1.2rem 1rem;
-                min-height: 160px;
+                height: 150px;
+                padding: 0.5rem;
+            }
+            .review-slide .review-text {
+                font-size: 0.8rem;
+            }
+            .review-slide .stars {
+                font-size: 1rem;
             }
             .carousel-btn {
-                width: 32px;
-                height: 32px;
+                width: 28px;
+                height: 28px;
                 font-size: 1rem;
             }
             .carousel-btn.prev {
-                left: 4px;
+                left: 2px;
             }
             .carousel-btn.next {
-                right: 4px;
+                right: 2px;
             }
             .advantages-grid {
                 padding: 0.8rem;
@@ -949,6 +1002,15 @@
                 font-size: 1rem;
                 width: 20px;
             }
+            .recommendation-box {
+                padding: 1rem;
+            }
+            .recommendation-box h3 {
+                font-size: 1.1rem;
+            }
+            .recommendation-box p {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
@@ -957,9 +1019,10 @@
     <!-- ===== НАВИГАЦИЯ ===== -->
     <nav>
         <div class="container nav-inner">
-            <div class="nav-logo">Валерия</div> <!-- изменено имя -->
+            <div class="nav-logo">Валерия</div> <!-- оставляем Валерия в навигации -->
             <ul class="nav-links" id="navLinks">
                 <li><a href="#experience">Опыт</a></li>
+                <li><a href="#recommendations">Рекомендации</a></li>
                 <li><a href="#why">Преимущества</a></li>
                 <li><a href="#about">О себе</a></li>
                 <li><a href="#reviews">Отзывы</a></li>
@@ -978,21 +1041,21 @@
                 <img src="IMG_20250910_185515.webp" alt="Валерия" />
             </div>
             <div class="hero-content">
-                <span class="tag">Няня для детей от 1 до 3 лет</span> <!-- убран смайлик -->
-                <h1>Валерия</h1> <!-- изменено имя -->
+                <span class="tag">Няня для детей от 1 до 3 лет</span>
+                <h1>Няня</h1> <!-- теперь здесь Няня -->
                 <p class="subtitle">Забота, развитие и безопасность</p>
                 <p class="description">
-                    Три года опыта работы с малышами. Спокойная, ответственная, с педагогическим подходом. Готова стать вашей надёжной опорой.
+                    Три года опыта работы с малышами. Спокойная, ответственная, внимательная. Готова стать вашей надёжной опорой.
                 </p>
                 <div class="btn-group">
                     <a href="#contact" class="btn btn-primary">Связаться</a>
-                    <a href="#why" class="btn btn-outline">Преимущества</a> <!-- изменено название и ссылка -->
+                    <a href="#why" class="btn btn-outline">Преимущества</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ===== ОПЫТ РАБОТЫ – убрали .section-label ===== -->
+    <!-- ===== ОПЫТ РАБОТЫ ===== -->
     <section id="experience">
         <div class="container">
             <h2>Мой <span class="accent">опыт</span></h2>
@@ -1009,7 +1072,7 @@
                         <strong>Обязанности:</strong> соблюдение режима дня: сон, питание, прогулки. Приготовление еды и кормление, уход. Организация развивающих занятий: лепка, чтение, игры. Развитие речи и социальных навыков. Поддержание чистоты детских вещей и комнаты.
                     </div>
                     <div class="exp-results">
-                        <strong>📌 Результаты:</strong> наладила дневной и ночной сон с помощью ритуалов (купание, чтение сказки), время засыпания сократилось. Активно занималась развитием речи, благодаря этому словарный запас вырос с 10 слов до 45.
+                        <strong>Результаты:</strong> наладила дневной и ночной сон с помощью ритуалов (купание, чтение сказки), время засыпания сократилось. Активно занималась развитием речи, благодаря этому словарный запас вырос с 10 слов до 45.
                     </div>
                 </div>
 
@@ -1023,7 +1086,7 @@
                         <strong>Обязанности:</strong> обеспечивала полный уход в ночное время: кормление, контроль комфорта, смена подгузников. Поддержание спокойного и безопасного сна. Быстро реагировала на пробуждение и капризы.
                     </div>
                     <div class="exp-results">
-                        <strong>📌 Результаты:</strong> безопасный сон ребёнка.
+                        <strong>Результаты:</strong> безопасный сон ребёнка.
                     </div>
                 </div>
 
@@ -1037,7 +1100,7 @@
                         <strong>Обязанности:</strong> режим дня: сон, кормление, прогулки. Обеспечивала безопасность, спокойствие и интересное времяпрепровождение. Иногда помогала по дому: уборка, поддержание порядка, стирка, глажка и мелкие бытовые задачи.
                     </div>
                     <div class="exp-results">
-                        <strong>📌 Результаты:</strong> внедрила систему уборки игрушек, после каждой игры убирали вместе в игровой форме. Таким образом ребёнок привык к порядку. Благодаря ежедневным занятиям мальчик уверенно различал 4 основных цвета.
+                        <strong>Результаты:</strong> внедрила систему уборки игрушек, после каждой игры убирали вместе в игровой форме. Таким образом ребёнок привык к порядку. Благодаря ежедневным занятиям мальчик уверенно различал 4 основных цвета.
                     </div>
                 </div>
 
@@ -1051,14 +1114,24 @@
                         <strong>Обязанности:</strong> забирала и отводила в школу, обеспечивая безопасное и комфортное время в пути. Помогала с выполнением домашних заданий, объясняла материал, помогала с учебным процессом. Организовывала досуг: вместе ходили на мероприятия, музеи, играли в настольные игры.
                     </div>
                     <div class="exp-results">
-                        <strong>📌 Результаты:</strong> благодаря систематической помощи с уроками у девочки исчез страх перед сложными темами. Привила интерес к школьным предметам. Благодаря расписанию девочка стала более организованной.
+                        <strong>Результаты:</strong> благодаря систематической помощи с уроками у девочки исчез страх перед сложными темами. Привила интерес к школьным предметам. Благодаря расписанию девочка стала более организованной.
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ===== ПРЕИМУЩЕСТВА – убрали .section-label ===== -->
+    <!-- ===== БЛОК РЕКОМЕНДАЦИЙ ===== -->
+    <section id="recommendations">
+        <div class="container">
+            <div class="recommendation-box">
+                <h3>📋 Рекомендации</h3>
+                <p>У меня есть <span class="highlight">рекомендательные письма</span> от предыдущих работодателей. По вашему запросу я с удовольствием их предоставлю.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ПРЕИМУЩЕСТВА ===== -->
     <section id="why">
         <div class="container">
             <h2>Мои <span class="accent">преимущества</span> и документы</h2>
@@ -1077,7 +1150,7 @@
                 <div class="advantage-item"><span class="check">✓</span> <span>Готова к зарубежным поездкам</span></div>
             </div>
 
-            <!-- Карусель документов -->
+            <!-- Карусель документов (бесконечная) -->
             <div class="carousel-wrapper" id="docCarousel">
                 <div class="carousel-track" id="docTrack"></div>
                 <button class="carousel-btn prev" onclick="moveCarousel('doc', -1)">‹</button>
@@ -1087,7 +1160,7 @@
         </div>
     </section>
 
-    <!-- ===== О СЕБЕ – убрали .section-label ===== -->
+    <!-- ===== О СЕБЕ ===== -->
     <section id="about">
         <div class="container">
             <h2>Мой характер и <span class="accent">увлечения</span></h2>
@@ -1112,7 +1185,7 @@
         </div>
     </section>
 
-    <!-- ===== ОТЗЫВЫ – убрали .section-label ===== -->
+    <!-- ===== ОТЗЫВЫ ===== -->
     <section id="reviews">
         <div class="container">
             <h2>Что говорят <span class="accent">родители</span></h2>
@@ -1127,11 +1200,11 @@
         </div>
     </section>
 
-    <!-- ===== КОНТАКТЫ – убрали .section-label ===== -->
+    <!-- ===== КОНТАКТЫ ===== -->
     <section id="contact">
         <div class="container contact-grid">
             <div class="contact-info">
-                <h2>Давайте <span class="accent">познакомимся</span></h2>
+                <h2>Связаться <span class="accent">со мной</span></h2> <!-- изменено -->
                 <div class="divider"></div>
                 <p>Готова ответить на все вопросы, обсудить условия и приехать на знакомство. Напишите или позвоните — отвечаю быстро 🌸</p>
 
@@ -1153,19 +1226,19 @@
                     </a>
                 </div>
             </div>
-            <!-- Форма удалена по требованию -->
+            <!-- Форма удалена -->
         </div>
     </section>
 
     <!-- ===== ФУТЕР ===== -->
     <footer>
         <div class="container">
-            © 2026 <span>Валерия</span> · Профессиональная няня с педагогическим подходом 💕
+            © 2026 <span>Валерия</span> · Няня с любовью к детям 💕 <!-- изменено -->
         </div>
     </footer>
 
     <!-- ============================================================
-    JAVASCRIPT
+    JAVASCRIPT – БЕСКОНЕЧНЫЕ КАРУСЕЛИ С РАЗНОЙ ШИРИНОЙ
     ============================================================ -->
     <script>
         // ===== БУРГЕР =====
@@ -1179,62 +1252,199 @@
         // ===== КАРУСЕЛИ =====
         const carousels = {};
 
-        function initCarousel(id, slidesData, slideRenderer) {
+        function initCarousel(id, slidesData, slideRenderer, isReview) {
             const track = document.getElementById(id + 'Track');
             const dotsContainer = document.getElementById(id + 'Dots');
             if (!track || !dotsContainer) return;
 
-            track.innerHTML = '';
+            // Создаём массив слайдов
+            const slides = [];
             slidesData.forEach((item, index) => {
                 const slide = document.createElement('div');
                 slide.className = 'carousel-slide';
-                if (id === 'review') slide.classList.add('review-slide');
+                if (isReview) slide.classList.add('review-slide');
                 slide.innerHTML = slideRenderer(item, index);
-                track.appendChild(slide);
+                slides.push(slide);
             });
 
-            const total = slidesData.length;
-            let current = 0;
+            const total = slides.length;
 
-            dotsContainer.innerHTML = '';
-            for (let i = 0; i < total; i++) {
-                const dot = document.createElement('button');
-                dot.className = 'dot' + (i === 0 ? ' active' : '');
-                dot.dataset.index = i;
-                dot.addEventListener('click', () => goTo(i));
-                dotsContainer.appendChild(dot);
+            // Сделаем массив слайдов повторённым 3 раза (если всего слайдов > 1, иначе просто один)
+            let multiSlides = [];
+            if (total === 1) {
+                multiSlides = slides;
+            } else {
+                for (let rep = 0; rep < 3; rep++) {
+                    slides.forEach(s => multiSlides.push(s.cloneNode(true)));
+                }
             }
 
-            function goTo(index) {
-                if (index < 0) index = total - 1;
-                if (index >= total) index = 0;
-                current = index;
-                track.style.transform = 'translateX(-' + (current * 100) + '%)';
-                document.querySelectorAll('#' + id + 'Dots .dot').forEach((d, i) => {
-                    d.classList.toggle('active', i === current);
-                });
+            // Заполняем трек
+            multiSlides.forEach(s => track.appendChild(s));
+
+            const totalMulti = multiSlides.length;
+            const realTotal = total;
+
+            function getVisible() {
+                const wrapper = track.closest('.carousel-wrapper');
+                const containerWidth = wrapper.clientWidth - 20;
+                if (isReview) {
+                    return getReviewVisible(containerWidth);
+                } else {
+                    return getDocVisible(containerWidth);
+                }
             }
 
-            window['moveCarousel_' + id] = function(dir) {
-                goTo(current + dir);
-            };
+            function updateSlideWidths() {
+                const wrapper = track.closest('.carousel-wrapper');
+                const containerWidth = wrapper.clientWidth - 20;
+                const visible = getVisible();
+
+                if (isReview) {
+                    const slideWidth = (containerWidth - (visible - 1) * 16) / visible;
+                    track.querySelectorAll('.review-slide').forEach(s => {
+                        s.style.width = slideWidth + 'px';
+                    });
+                } else {
+                    const slides = track.querySelectorAll('.carousel-slide:not(.review-slide)');
+                    slides.forEach(slide => {
+                        const img = slide.querySelector('img');
+                        if (img && img.complete && img.naturalWidth > 0) {
+                            const ratio = img.naturalWidth / img.naturalHeight;
+                            const slideHeight = slide.clientHeight || 280;
+                            let width = slideHeight * ratio;
+                            const maxWidth = 400;
+                            if (width > maxWidth) width = maxWidth;
+                            if (width < 80) width = 80;
+                            slide.style.width = width + 'px';
+                        } else if (img) {
+                            slide.style.width = '200px';
+                            img.addEventListener('load', () => {
+                                updateSlideWidths();
+                            });
+                        }
+                    });
+                }
+
+                goTo(currentIndex, false);
+                updateDots();
+            }
+
+            let currentIndex = 0;
+
+            function goTo(index, animate = true) {
+                const visible = getVisible();
+                const maxIndex = totalMulti - visible;
+                if (index < 0) index = 0;
+                if (index > maxIndex) index = maxIndex;
+                currentIndex = index;
+
+                const slides = track.querySelectorAll('.carousel-slide');
+                let offset = 0;
+                for (let i = 0; i < index; i++) {
+                    const w = slides[i].offsetWidth || parseFloat(slides[i].style.width) || 200;
+                    offset += w + 16;
+                }
+                track.style.transform = 'translateX(-' + offset + 'px)';
+                if (!animate) {
+                    track.style.transition = 'none';
+                    requestAnimationFrame(() => {
+                        track.style.transition = '';
+                    });
+                }
+                updateDots();
+            }
+
+            function updateDots() {
+                const visible = getVisible();
+                const pageCount = Math.ceil(realTotal / visible);
+                const realIndex = currentIndex % realTotal;
+                const currentPage = Math.floor(realIndex / visible);
+                dotsContainer.innerHTML = '';
+                for (let i = 0; i < pageCount; i++) {
+                    const dot = document.createElement('button');
+                    dot.className = 'dot' + (i === currentPage ? ' active' : '');
+                    dot.dataset.index = i;
+                    dot.addEventListener('click', () => {
+                        const targetIndex = i * visible;
+                        const baseIndex = realTotal;
+                        let newIndex = baseIndex + targetIndex;
+                        if (newIndex > totalMulti - visible) newIndex = totalMulti - visible;
+                        goTo(newIndex);
+                    });
+                    dotsContainer.appendChild(dot);
+                }
+            }
+
+            updateSlideWidths();
+
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    updateSlideWidths();
+                }, 200);
+            });
 
             let autoInterval = setInterval(() => {
-                goTo(current + 1);
+                const visible = getVisible();
+                const maxIndex = totalMulti - visible;
+                if (currentIndex < maxIndex - 1) {
+                    goTo(currentIndex + 1);
+                } else {
+                    const baseIndex = realTotal;
+                    goTo(baseIndex, false);
+                    setTimeout(() => {
+                        goTo(baseIndex + 1);
+                    }, 20);
+                }
             }, 5000);
 
             const wrapper = track.closest('.carousel-wrapper');
-            if (wrapper) {
-                wrapper.addEventListener('mouseenter', () => clearInterval(autoInterval));
-                wrapper.addEventListener('mouseleave', () => {
-                    autoInterval = setInterval(() => {
-                        goTo(current + 1);
-                    }, 5000);
-                });
-            }
+            wrapper.addEventListener('mouseenter', () => clearInterval(autoInterval));
+            wrapper.addEventListener('mouseleave', () => {
+                autoInterval = setInterval(() => {
+                    const visible = getVisible();
+                    const maxIndex = totalMulti - visible;
+                    if (currentIndex < maxIndex - 1) {
+                        goTo(currentIndex + 1);
+                    } else {
+                        const baseIndex = realTotal;
+                        goTo(baseIndex, false);
+                        setTimeout(() => {
+                            goTo(baseIndex + 1);
+                        }, 20);
+                    }
+                }, 5000);
+            });
 
-            goTo(0);
-            carousels[id] = { goTo: goTo, current: current, total: total };
+            carousels[id] = {
+                goTo: goTo,
+                current: () => currentIndex,
+                total: realTotal,
+                update: updateSlideWidths,
+                getVisible: getVisible,
+                move: function(dir) {
+                    const visible = getVisible();
+                    const maxIndex = totalMulti - visible;
+                    let newIndex = this.current() + dir;
+                    if (newIndex < 0) newIndex = 0;
+                    if (newIndex > maxIndex) newIndex = maxIndex;
+                    const lowerBound = realTotal;
+                    const upperBound = 2 * realTotal - visible;
+                    if (newIndex < lowerBound) {
+                        newIndex = upperBound - 1;
+                    } else if (newIndex > upperBound) {
+                        newIndex = lowerBound;
+                    }
+                    this.goTo(newIndex);
+                }
+            };
+
+            window['moveCarousel_' + id] = function(dir) {
+                const c = carousels[id];
+                if (c) c.move(dir);
+            };
         }
 
         // ===== ОТЗЫВЫ =====
@@ -1257,10 +1467,11 @@
                         `;
         }
 
-        // ===== ФОТО ДЛЯ КАРУСЕЛИ ДОКУМЕНТОВ (замените на свои пути) =====
+        // ===== ФОТО ДЛЯ КАРУСЕЛИ ДОКУМЕНТОВ =====
         const docPhotos = [
             'IMG_20260828_155504.webp',
             'IMG_7904.HEIC.webp',
+            'photo_2026-08-10_16-06-24.jpg',
             'photo_2026-08-10_16-09-04.jpg',
             'photo_2026-08-10_16-10-43.jpg'
         ];
@@ -1269,14 +1480,26 @@
             return '<img src="' + src + '" alt="Документ" />';
         }
 
+        // ===== ФУНКЦИИ ОПРЕДЕЛЕНИЯ КОЛИЧЕСТВА ВИДИМЫХ =====
+        function getDocVisible(containerWidth) {
+            return 1;
+        }
+
+        function getReviewVisible(containerWidth) {
+            if (containerWidth < 500) return 1;
+            if (containerWidth < 768) return 1;
+            if (containerWidth < 992) return 2;
+            return 2;
+        }
+
         // ===== ИНИЦИАЛИЗАЦИЯ =====
         document.addEventListener('DOMContentLoaded', function() {
-            initCarousel('review', reviews, reviewRenderer);
-            initCarousel('doc', docPhotos, imgRenderer);
+            initCarousel('review', reviews, reviewRenderer, true);
+            initCarousel('doc', docPhotos, imgRenderer, false);
 
             window.moveCarousel = function(type, dir) {
                 const c = carousels[type];
-                if (c) c.goTo(c.current + dir);
+                if (c) c.move(dir);
             };
         });
     </script>
