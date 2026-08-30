@@ -242,9 +242,9 @@
             border: 2px solid var(--color-lavender-light);
             position: relative;
             width: 100%;
-            max-width: 500px;            /* фиксированная максимальная ширина */
-            aspect-ratio: 3 / 3;         /* единое соотношение сторон для всех слайдов */
-            justify-self: center;        /* центрирование внутри сетки */
+            max-width: 500px;
+            aspect-ratio: 3 / 3;
+            justify-self: center;
         }
         .hero-photo:hover {
             box-shadow: var(--shadow-hover);
@@ -263,7 +263,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;            /* фото заполняют контейнер полностью, обрезая лишнее */
+            object-fit: cover;
             opacity: 0;
             transition: opacity 0.8s ease-in-out;
             background: var(--color-lavender-light);
@@ -551,7 +551,7 @@
         }
 
         /* ============================================================
-                   КАРУСЕЛЬ – для документов и отзывов (одинаковые параметры)
+                   КАРУСЕЛЬ – для документов и отзывов
                    ============================================================ */
         .carousel-wrapper {
             position: relative;
@@ -575,6 +575,7 @@
             padding: 10px 0;
             align-items: stretch;
             background: var(--color-white);
+            touch-action: pan-y; /* разрешаем вертикальный скролл, горизонтальный обрабатываем сами */
         }
 
         .carousel-slide {
@@ -595,8 +596,11 @@
             object-fit: contain;
             display: block;
             background: #f5f2ef;
+            user-select: none;
+            -webkit-user-drag: none;
         }
 
+        /* ---------- СТРЕЛКИ НАВИГАЦИИ (видны на десктопе) ---------- */
         .carousel-btn {
             position: absolute;
             top: 50%;
@@ -686,7 +690,7 @@
         }
 
         /* ============================================================
-                   КОНТАКТЫ – информация о мессенджерах встроена в ссылку
+                   КОНТАКТЫ
                    ============================================================ */
         #contact {
             background: var(--color-bg-section);
@@ -773,7 +777,7 @@
         }
 
         /* ============================================================
-                   АДАПТИВ – убраны все фиксированные высоты для .hero-photo
+                   АДАПТИВ
                    ============================================================ */
         @media (max-width: 992px) {
             .hero-grid {
@@ -793,12 +797,11 @@
                 padding: 1.5rem;
             }
             .carousel-slide {
-                height: 220px;
+                height: 280px;
             }
             .recommendation-box {
                 padding: 1.5rem;
             }
-            /* .hero-photo теперь полностью адаптивен через aspect-ratio и max-width */
         }
 
         @media (max-width: 768px) {
@@ -880,24 +883,19 @@
                 font-size: 0.7rem;
             }
 
+            /* ---------- Увеличение слайдов на мобильных ---------- */
+            .carousel-slide {
+                height: 320px;
+            }
+
+            /* ---------- Скрываем стрелки на мобильных ---------- */
             .carousel-btn {
-                width: 34px;
-                height: 34px;
-                font-size: 1.2rem;
-            }
-            .carousel-btn.prev {
-                left: 2px;
-            }
-            .carousel-btn.next {
-                right: 2px;
+                display: none;
             }
 
             #about .about-text p {
                 font-size: 0.95rem;
                 padding-left: 0.8rem;
-            }
-            .carousel-slide {
-                height: 180px;
             }
             .recommendation-box {
                 padding: 1.2rem;
@@ -935,18 +933,7 @@
                 font-size: 0.9rem;
             }
             .carousel-slide {
-                height: 150px;
-            }
-            .carousel-btn {
-                width: 28px;
-                height: 28px;
-                font-size: 1rem;
-            }
-            .carousel-btn.prev {
-                left: 2px;
-            }
-            .carousel-btn.next {
-                right: 2px;
+                height: 360px;
             }
             .advantages-grid {
                 padding: 0.8rem;
@@ -969,44 +956,51 @@
                 font-size: 0.9rem;
             }
         }
-    
 
-.hero-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    border: none;
-    background: rgba(255,255,255,.85);
-    cursor: pointer;
-    z-index: 10;
-    font-size: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.hero-arrow.prev { left: 15px; }
-.hero-arrow.next { right: 15px; }
+        /* ---------- Явное правило для десктопа: стрелки видны ---------- */
+        @media (min-width: 769px) {
+            .carousel-btn {
+                display: flex;
+            }
+        }
 
-.photo-modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.85);
-    z-index: 9999;
-    align-items: center;
-    justify-content: center;
-}
-.photo-modal.active { display:flex; }
-.photo-modal img {
-    max-width:95%;
-    max-height:90%;
-    object-fit:contain;
-}
+        /* ===== Стили для hero-слайдера ===== */
+        .hero-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,.85);
+            cursor: pointer;
+            z-index: 10;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-arrow.prev { left: 15px; }
+        .hero-arrow.next { right: 15px; }
 
-</style>
+        /* ===== Модальное окно для увеличения фото ===== */
+        .photo-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.85);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        .photo-modal.active { display:flex; }
+        .photo-modal img {
+            max-width:95%;
+            max-height:90%;
+            object-fit:contain;
+        }
+    </style>
 </head>
 <body>
 
@@ -1032,8 +1026,10 @@
     <section id="hero">
         <div class="container hero-grid">
             <div class="hero-photo">
-                <!-- Слайдер – фото добавляются через JavaScript -->
-                <div class="hero-slider" id="heroSlider"><button class="hero-arrow prev" id="heroPrev">‹</button><button class="hero-arrow next" id="heroNext">›</button></div>
+                <div class="hero-slider" id="heroSlider">
+                    <button class="hero-arrow prev" id="heroPrev">‹</button>
+                    <button class="hero-arrow next" id="heroNext">›</button>
+                </div>
             </div>
             <div class="hero-content">
                 <span class="tag">Няня для детей</span>
@@ -1055,7 +1051,6 @@
         <div class="container">
             <h2>Мой <span class="accent">опыт</span></h2>
             <div class="divider"></div>
-
             <div class="experience-list">
                 <div class="exp-item">
                     <div class="exp-header">
@@ -1070,7 +1065,6 @@
                         <strong>Результаты:</strong> наладила дневной и ночной сон с помощью ритуалов (купание, чтение сказки), время засыпания сократилось. Активно занималась развитием речи, благодаря этому словарный запас вырос с 10 слов до 45.
                     </div>
                 </div>
-
                 <div class="exp-item">
                     <div class="exp-header">
                         <h3>Семья 2</h3>
@@ -1084,7 +1078,6 @@
                         <strong>Результаты:</strong> безопасный сон ребёнка.
                     </div>
                 </div>
-
                 <div class="exp-item">
                     <div class="exp-header">
                         <h3>Семья 3</h3>
@@ -1098,7 +1091,6 @@
                         <strong>Результаты:</strong> внедрила систему уборки игрушек, после каждой игры убирали вместе в игровой форме. Таким образом ребёнок привык к порядку. Благодаря ежедневным занятиям мальчик уверенно различал 4 основных цвета.
                     </div>
                 </div>
-
                 <div class="exp-item">
                     <div class="exp-header">
                         <h3>Семья 4</h3>
@@ -1116,7 +1108,7 @@
         </div>
     </section>
 
-    <!-- ===== БЛОК РЕКОМЕНДАЦИЙ (голубой фон) ===== -->
+    <!-- ===== БЛОК РЕКОМЕНДАЦИЙ ===== -->
     <section id="recommendations">
         <div class="container">
             <div class="recommendation-box">
@@ -1135,7 +1127,6 @@
         <div class="container">
             <h2>Мои <span class="accent">преимущества</span> и документы</h2>
             <div class="divider"></div>
-
             <div class="advantages-grid">
                 <div class="advantage-item"><span class="check">✓</span> <span>Сертификат первой помощи детям</span></div>
                 <div class="advantage-item"><span class="check">✓</span> <span>Нет вредных привычек</span></div>
@@ -1159,59 +1150,45 @@
         </div>
     </section>
 
-    <!-- ===== О СЕБЕ – без тегов ===== -->
-<section id="about">
-
-    <div class="container">
-
-        <h2>Обо мне</h2>
-
-        <div class="divider"></div>
-
-        <div class="about-text">
-
-            <p>
-                <strong>Мне 21 год, я няня с трёхлетним опытом работы с детьми.</strong>
-                С детства я помогала заботиться о младших братьях, а во время учёбы работала с детьми школьного возраста. Последний год в Москве я занимаюсь с малышами 2–4 лет, помогая им развиваться, познавать мир и становиться самостоятельнее.
-            </p>
-
-            <p>
-                <strong>Для меня работа няни — это не только забота и безопасность, но и развитие ребёнка.</strong>
-                Сейчас я получаю образование по специальности «няня», потому что хочу глубже понимать особенности детского возраста и профессионально помогать детям раскрывать свои способности.
-            </p>
-
-            <p>
-                <strong>Педагогика у меня в крови.</strong>
-                Моя мама и бабушка — учителя, поэтому любовь к детям, терпение и желание помогать им расти были частью моей жизни с самого детства.
-            </p>
-
-            <p>
-                <strong>По характеру я спокойная, внимательная и уверенная.</strong>
-                Я умею слушать и слышать ребёнка, поддерживать его эмоции, но при этом мягко устанавливать границы и помогать формировать самостоятельность.
-            </p>
-
-            <p>
-                <strong>В своей работе я уделяю внимание развитию речи, мелкой моторики, воображения и эмоционального интеллекта.</strong>
-                Рисование, лепка, чтение и творческие игры помогают детям учиться через интерес, развивать свои способности и становиться увереннее.
-            </p>
-
-            <p>
-                <strong>Я хочу создать для ребёнка тёплую и безопасную атмосферу,</strong>
-                где он сможет спокойно расти, исследовать мир, учиться дружить, фантазировать и верить в свои силы.
-            </p>
-
+    <!-- ===== О СЕБЕ ===== -->
+    <section id="about">
+        <div class="container">
+            <h2>Обо мне</h2>
+            <div class="divider"></div>
+            <div class="about-text">
+                <p>
+                    <strong>Мне 21 год, я няня с трёхлетним опытом работы с детьми.</strong>
+                    С детства я помогала заботиться о младших братьях, а во время учёбы работала с детьми школьного возраста. Последний год в Москве я занимаюсь с малышами 2–4 лет, помогая им развиваться, познавать мир и становиться самостоятельнее.
+                </p>
+                <p>
+                    <strong>Для меня работа няни — это не только забота и безопасность, но и развитие ребёнка.</strong>
+                    Сейчас я получаю образование по специальности «няня», потому что хочу глубже понимать особенности детского возраста и профессионально помогать детям раскрывать свои способности.
+                </p>
+                <p>
+                    <strong>Педагогика у меня в крови.</strong>
+                    Моя мама и бабушка — учителя, поэтому любовь к детям, терпение и желание помогать им расти были частью моей жизни с самого детства.
+                </p>
+                <p>
+                    <strong>По характеру я спокойная, внимательная и уверенная.</strong>
+                    Я умею слушать и слышать ребёнка, поддерживать его эмоции, но при этом мягко устанавливать границы и помогать формировать самостоятельность.
+                </p>
+                <p>
+                    <strong>В своей работе я уделяю внимание развитию речи, мелкой моторики, воображения и эмоционального интеллекта.</strong>
+                    Рисование, лепка, чтение и творческие игры помогают детям учиться через интерес, развивать свои способности и становиться увереннее.
+                </p>
+                <p>
+                    <strong>Я хочу создать для ребёнка тёплую и безопасную атмосферу,</strong>
+                    где он сможет спокойно расти, исследовать мир, учиться дружить, фантазировать и верить в свои силы.
+                </p>
+            </div>
         </div>
+    </section>
 
-    </div>
-
-</section>
-
-    <!-- ===== ОТЗЫВЫ – фото-карусель с теми же параметрами, что и документы ===== -->
+    <!-- ===== ОТЗЫВЫ ===== -->
     <section id="reviews">
         <div class="container">
             <h2>Что говорят <span class="accent">родители</span></h2>
             <div class="divider"></div>
-
             <div class="carousel-wrapper" id="reviewCarousel">
                 <div class="carousel-track" id="reviewTrack"></div>
                 <button class="carousel-btn prev" onclick="moveCarousel('review', -1)">‹</button>
@@ -1228,7 +1205,6 @@
                 <h2>Связаться <span class="accent">со мной</span></h2>
                 <div class="divider"></div>
                 <p>Готова ответить на все вопросы, обсудить условия и приехать на знакомство. Напишите или позвоните — отвечаю быстро 🌸</p>
-
                 <div class="contact-links">
                     <a href="tel:+79526806934" class="contact-link">
                         <span class="icon">📞</span>
@@ -1237,21 +1213,18 @@
                             <span class="sub">WhatsApp, Telegram, Viber, Макс</span>
                         </span>
                     </a>
-
                     <a href="mailto:ponkina2005@gmail.com" class="contact-link">
                         <span class="icon">✉️</span>
                         <span class="link-text">
                             <span class="main">ponkina2005@gmail.com</span>
                         </span>
                     </a>
-
                     <a href="https://t.me/deadline24" target="_blank" class="contact-link">
                         <span class="icon">✈️</span>
                         <span class="link-text">
-                            <span class="main">Telegram: @NannyValeria </span>
+                            <span class="main">Telegram: @nannylera</span>
                         </span>
                     </a>
-
                     <a href="#" class="contact-link">
                         <span class="icon">📍</span>
                         <span class="link-text">
@@ -1271,7 +1244,7 @@
     </footer>
 
     <!-- ============================================================
-    JAVASCRIPT – КАРУСЕЛИ И СЛАЙДЕР HERO
+    JAVASCRIPT
     ============================================================ -->
     <script>
     // ===== БУРГЕР =====
@@ -1282,13 +1255,14 @@
         a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
     });
 
-    // ===== СЛАЙДЕР HERO БЕЗ АВТОПРОКРУТКИ =====
+    // ===== СЛАЙДЕР HERO =====
     (function() {
         const heroImages = [
             'главные фото/20260822_183527.jpg',
             'главные фото/IMG_20250910_185515.webp',
             'главные фото/IMG_20250924_162222.webp',
-            'главные фото/IMG_20260827_171648_440.webp'
+            'главные фото/IMG_20260827_171648_440.webp',
+            'главные фото/IMG.png'
         ];
 
         const sliderContainer = document.getElementById('heroSlider');
@@ -1321,7 +1295,7 @@
         };
     })();
 
-    // ===== КАРУСЕЛИ (документы и отзывы) — БЕЗ ПУСТОГО ПРОСТРАНСТВА В КОНЦЕ =====
+    // ===== КАРУСЕЛИ (документы и отзывы) с поддержкой touch =====
     const carousels = {};
 
     function initCarousel(id, slidesData, slideRenderer) {
@@ -1340,26 +1314,23 @@
         let positions = [0];
         let autoInterval = null;
 
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let isSwiping = false;
+        let touchMoved = false;
+
         function buildPositions() {
             const slides = Array.from(track.querySelectorAll('.carousel-slide'));
             if (!slides.length) {
                 positions = [0];
                 return;
             }
-
-            // Максимально допустимый сдвиг: ровно до правого края последней фотографии.
-            // Благодаря этому карусель физически не может уехать дальше в белый фон.
             const maxOffset = Math.max(0, track.scrollWidth - track.clientWidth);
-
             const rawPositions = slides.map(slide => Math.min(slide.offsetLeft, maxOffset));
             rawPositions.push(maxOffset);
-
-            // Убираем повторяющиеся позиции, которые появляются у последних слайдов,
-            // когда несколько из них уже помещаются в видимую область одновременно.
             positions = rawPositions
                 .sort((a, b) => a - b)
                 .filter((value, index, arr) => index === 0 || Math.abs(value - arr[index - 1]) > 1);
-
             if (!positions.length) positions = [0];
             currentPosition = Math.min(currentPosition, positions.length - 1);
         }
@@ -1368,14 +1339,12 @@
             const wrapper = track.closest('.carousel-wrapper');
             const prevBtn = wrapper.querySelector('.carousel-btn.prev');
             const nextBtn = wrapper.querySelector('.carousel-btn.next');
-
             if (prevBtn) prevBtn.disabled = currentPosition === 0;
             if (nextBtn) nextBtn.disabled = currentPosition === positions.length - 1;
         }
 
         function updateDots() {
             dotsContainer.innerHTML = '';
-
             positions.forEach((_, i) => {
                 const dot = document.createElement('button');
                 dot.className = 'dot' + (i === currentPosition ? ' active' : '');
@@ -1386,50 +1355,46 @@
 
         function goToPosition(positionIndex, animate = true) {
             if (!positions.length) return;
-
             positionIndex = Math.max(0, Math.min(positionIndex, positions.length - 1));
             currentPosition = positionIndex;
-
             if (!animate) track.style.transition = 'none';
             track.style.transform = 'translateX(-' + positions[currentPosition] + 'px)';
-
             if (!animate) {
                 requestAnimationFrame(() => {
                     track.style.transition = '';
                 });
             }
-
             updateDots();
             updateButtons();
         }
 
         function updateSlideWidths() {
             const slides = track.querySelectorAll('.carousel-slide');
-
+            const isMobile = window.innerWidth <= 768;
             slides.forEach(slide => {
                 const img = slide.querySelector('img');
                 if (!img) return;
-
                 if (img.complete && img.naturalWidth > 0) {
                     const ratio = img.naturalWidth / img.naturalHeight;
                     const slideHeight = slide.clientHeight || 280;
                     let width = slideHeight * ratio;
-
-                    width = Math.min(width, 400);
-                    width = Math.max(width, 80);
+                    if (isMobile) {
+                        const maxWidth = window.innerWidth * 0.9;
+                        width = Math.min(width, maxWidth);
+                        width = Math.max(width, 80);
+                    } else {
+                        width = Math.min(width, 400);
+                        width = Math.max(width, 80);
+                    }
                     slide.style.width = width + 'px';
                 } else {
                     slide.style.width = '200px';
                     img.addEventListener('load', updateSlideWidths, { once: true });
                 }
             });
-
-            // После изменения ширины картинок пересчитываем реальные допустимые позиции.
             requestAnimationFrame(() => {
                 const oldOffset = positions[currentPosition] || 0;
                 buildPositions();
-
-                // Выбираем ближайшую к текущему месту позицию после resize/load.
                 let nearest = 0;
                 let nearestDistance = Infinity;
                 positions.forEach((pos, i) => {
@@ -1439,7 +1404,6 @@
                         nearest = i;
                     }
                 });
-
                 currentPosition = nearest;
                 goToPosition(currentPosition, false);
             });
@@ -1452,26 +1416,45 @@
             }
         }
 
-        function startAutoPlay() {
-            stopAutoPlay();
-            if (positions.length <= 1 || currentPosition >= positions.length - 1) return;
+        function handleTouchStart(e) {
+            const touch = e.touches[0];
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
+            isSwiping = false;
+            touchMoved = false;
+        }
 
-            autoInterval = setInterval(() => {
-                if (currentPosition < positions.length - 1) {
-                    goToPosition(currentPosition + 1);
+        function handleTouchMove(e) {
+            if (!touchStartX || !touchStartY) return;
+            const touch = e.touches[0];
+            const deltaX = touch.clientX - touchStartX;
+            const deltaY = touch.clientY - touchStartY;
+            if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 10) {
+                return;
+            }
+            e.preventDefault();
+            touchMoved = true;
+            if (!isSwiping && Math.abs(deltaX) > 50) {
+                isSwiping = true;
+                if (deltaX < 0) {
+                    moveCarousel(id, 1);
                 } else {
-                    stopAutoPlay();
+                    moveCarousel(id, -1);
                 }
-            }, 5000);
+            }
+        }
+
+        function handleTouchEnd(e) {
+            touchStartX = 0;
+            touchStartY = 0;
+            isSwiping = false;
+            touchMoved = false;
         }
 
         carousels[id] = {
             move(dir) {
                 const target = currentPosition + dir;
-
-                // Жёсткая остановка на первом/последнем допустимом положении.
                 if (target < 0 || target >= positions.length) return;
-
                 goToPosition(target);
             },
             update: updateSlideWidths
@@ -1489,17 +1472,19 @@
         wrapper.addEventListener('mouseenter', stopAutoPlay);
         wrapper.addEventListener('mouseleave', stopAutoPlay);
 
-        // Автопрокрутка запускается после загрузки размеров изображений.
-        // Автопрокрутка отключена
+        track.addEventListener('touchstart', handleTouchStart, { passive: true });
+        track.addEventListener('touchmove', handleTouchMove, { passive: false });
+        track.addEventListener('touchend', handleTouchEnd, { passive: true });
+        track.addEventListener('touchcancel', handleTouchEnd, { passive: true });
     }
 
     // ===== ФОТО ДЛЯ КАРУСЕЛИ ДОКУМЕНТОВ =====
     const docPhotos = [
         'первая помощь/IMG_20260828_155504.webp',
         'первая помощь/IMG_7904.HEIC.webp',
-        'первая помощь/photo_2026-08-10_16-06-24.jpg',
+        'первая помощь/photo_2026-08-10_16-09-04.jpg',
         'первая помощь/photo_2026-08-10_16-10-43.jpg',
-        'первая помощь/photo_2026-08-10_16-09-04.jpg'
+        'первая помощь/photo_2026-08-10_16-06-24.jpg'
     ];
 
     function imgRenderer(src) {
@@ -1528,32 +1513,31 @@
             if (c) c.move(dir);
         };
     });
-</script>
-       
+    </script>
 
-<div class="photo-modal" id="photoModal">
-    <img id="modalImage" src="" alt="">
-</div>
-<script>
-(function(){
-const modal=document.getElementById('photoModal');
-const modalImage=document.getElementById('modalImage');
-document.addEventListener('click',function(e){
- if(e.target.classList.contains('zoom-photo')){
-   modalImage.src=e.target.src;
-   modal.classList.add('active');
- }
-});
-modal.addEventListener('click',function(){modal.classList.remove('active');});
-})();
+    <!-- ===== МОДАЛЬНОЕ ОКНО ДЛЯ УВЕЛИЧЕНИЯ ФОТО ===== -->
+    <div class="photo-modal" id="photoModal">
+        <img id="modalImage" src="" alt="">
+    </div>
+    <script>
+    (function(){
+        const modal=document.getElementById('photoModal');
+        const modalImage=document.getElementById('modalImage');
+        document.addEventListener('click',function(e){
+            if(e.target.classList.contains('zoom-photo')){
+                modalImage.src=e.target.src;
+                modal.classList.add('active');
+            }
+        });
+        modal.addEventListener('click',function(){modal.classList.remove('active');});
+    })();
 
-window.onload = function() {
-    setTimeout(() => {
-        window.scrollTo(0, 0);
-    }, 50);
-};
-
-</script>
+    window.onload = function() {
+        setTimeout(() => {
+            window.scrollTo(0, 0);
+        }, 50);
+    };
+    </script>
 
 </body>
 </html>
